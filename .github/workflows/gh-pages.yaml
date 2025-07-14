@@ -3,7 +3,7 @@ name: Github Pages
 on:
   push:
     branches:
-      - master
+      - test-workflow
     paths:
       - '**.md'
       - 'docs/**'
@@ -37,6 +37,26 @@ jobs:
           
       - name: Build and Deploy
         run: |
-          mkdocs gh-deploy --force
+          # Backup chart repo files
+          git checkout gh-pages
+          mkdir -p /tmp/chart-backup
+          cp -r . /tmp/chart-backup/ 2>/dev/null || true
+          git checkout master
+          
+          # Build MkDocs site
+          mkdocs build
+          
+          # Deploy with chart files preserved
+          git checkout gh-pages
+          rm -rf docs/ *.html *.js *.css search/ sitemap.xml* 2>/dev/null || true
+          cp -r site/* .
+          
+          # Restore chart repo files (excluding docs site files)
+          cp -r /tmp/chart-backup/index.yaml . 2>/dev/null || true
+          cp -r /tmp/chart-backup/*.tgz . 2>/dev/null || true
+          
+          git add .
+          git commit -m "Documentation sync from master" || exit 0
+          git push origin gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
