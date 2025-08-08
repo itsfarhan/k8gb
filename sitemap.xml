@@ -1,123 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/address_discovery/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/ADOPTERS/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/admiralty/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/CONTRIBUTING/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/components/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/address_discovery/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/deploy_azuredns/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/admiralty/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/deploy_cloudflare/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/components/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/deploy_infoblox/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/deploy_azuredns/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/deploy_ns1/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/deploy_cloudflare/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/deploy_route53/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/deploy_infoblox/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/deploy_windowsdns/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/deploy_ns1/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/dynamic_geotags/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/deploy_route53/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/exposing_dns/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/deploy_windowsdns/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/ingress_annotations/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/dynamic_geotags/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/intro/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/exposing_dns/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/liqo/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/ingress_annotations/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/local-kuar/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/intro/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/local/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/liqo/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/metrics/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/local-kuar/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/multizone/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/local/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/provider_rfc2136/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/metrics/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/proxy_externaldns/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/multizone/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/rancher/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/provider_rfc2136/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/resource_ref/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/proxy_externaldns/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/service_upgrade/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/rancher/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/strategy/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/resource_ref/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/traces/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/service_upgrade/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/tutorials/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/strategy/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/wrr_caveats/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/traces/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/examples/crossplane/globalapp/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/tutorials/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
     <url>
-         <loc>https://itsfarhan.k8gb.io/k8gb/examples/crossplane/globalapp/CLAUDE/</loc>
-         <lastmod>2025-07-14</lastmod>
+         <loc>https://k8gb.io/wrr_caveats/</loc>
+         <lastmod>2025-08-08</lastmod>
+    </url>
+    <url>
+         <loc>https://k8gb.io/examples/crossplane/globalapp/</loc>
+         <lastmod>2025-08-08</lastmod>
     </url>
 </urlset>
