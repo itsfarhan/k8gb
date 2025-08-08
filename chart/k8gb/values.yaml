@@ -71,6 +71,15 @@ k8gb:
       memory: "128Mi"
       cpu: "500m"
 
+  # -- Tolerations to apply to the k8gb operator deployment
+  # for example:
+  #   tolerations:
+  #   - key: foo.bar.com/role
+  #     operator: Equal
+  #     value: master
+  #     effect: NoSchedule
+  tolerations: []
+
 externaldns:
   # -- `.spec.template.spec.dnsPolicy` for ExternalDNS deployment
   dnsPolicy: "ClusterFirst"
@@ -85,7 +94,7 @@ externaldns:
   # functionality. See links below
   # https://github.com/k8gb-io/external-dns
   # https://github.com/k8gb-io/external-dns/pkgs/container/external-dns
-  image: registry.k8s.io/external-dns/external-dns:v0.17.0
+  image: registry.k8s.io/external-dns/external-dns:v0.18.0
   # -- external-dns sync interval
   interval: "20s"
   securityContext:
@@ -125,7 +134,10 @@ coredns:
       add: []
   # -- Only meant to open the correct service and container ports, has no other impact on the coredns configuration
   servers:
-  - port: 5353
+  - zones:
+    - zone: .
+      use_tcp: true
+    port: 5353
     servicePort: 53
     plugins:
     - name: prometheus
@@ -147,6 +159,12 @@ coredns:
   # -- CoreDNS configmap
   corefile:
     enabled: true
+    # -- Reload CoreDNS configmap when it changes
+    # https://coredns.io/plugins/reload/
+    reload:
+      enabled: true
+      interval: 30s
+      jitter: 15s
 
 infoblox:
   # -- infoblox provider enabled
@@ -163,6 +181,8 @@ infoblox:
   httpRequestTimeout: 20
   # -- Size of connections pool
   httpPoolConnections: 10
+  # -- DNS view to use for zone operations
+  dnsView: "default"
 
 extdns:
   enabled: false

@@ -28,6 +28,9 @@ spec:
         {{- end }}
     spec:
       serviceAccountName: k8gb
+      {{- if .Values.k8gb.tolerations }}
+      tolerations: {{ toYaml .Values.k8gb.tolerations | nindent 8 }}
+      {{- end }}
       containers:
         - name: k8gb
           ports:
@@ -99,6 +102,11 @@ spec:
                 configMapKeyRef:
                   name: infoblox
                   key: INFOBLOX_HTTP_POOL_CONNECTIONS
+            - name: INFOBLOX_DNS_VIEW
+              valueFrom:
+                configMapKeyRef:
+                  name: infoblox
+                  key: INFOBLOX_DNS_VIEW                  
             - name: INFOBLOX_WAPI_USERNAME
               valueFrom:
                 secretKeyRef:

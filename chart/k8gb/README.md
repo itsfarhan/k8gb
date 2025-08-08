@@ -1,6 +1,6 @@
 # k8gb
 
-![Version: v0.15.0-rc3](https://img.shields.io/badge/Version-v0.15.0--rc3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.15.0-rc3](https://img.shields.io/badge/AppVersion-v0.15.0--rc3-informational?style=flat-square)
+![Version: v0.15.0](https://img.shields.io/badge/Version-v0.15.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.15.0](https://img.shields.io/badge/AppVersion-v0.15.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes Global Balancer
 
@@ -36,7 +36,7 @@ Kubernetes: `>= 1.21.0-0`
 | Repository | Name | Version |
 |------------|------|---------|
 | https://coredns.github.io/helm | coredns | 1.43.0 |
-| https://kubernetes-sigs.github.io/external-dns | extdns(external-dns) | 1.17.0 |
+| https://kubernetes-sigs.github.io/external-dns | extdns(external-dns) | 1.18.0 |
 
 For Kubernetes `< 1.19` use this chart and k8gb in version `0.8.8` or lower.
 
@@ -66,7 +66,8 @@ For Kubernetes `< 1.19` use this chart and k8gb in version `0.8.8` or lower.
 | cloudflare.dnsRecordsPerPage | int | `5000` | Configure how many DNS records to fetch per request see https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/cloudflare.md#throttling |
 | cloudflare.enabled | bool | `false` | Enable Cloudflare provider |
 | cloudflare.zoneID | string | `"replaceme"` | Cloudflare Zone ID follow https://developers.cloudflare.com/fundamentals/setup/find-account-and-zone-ids/ to find your zoneID value |
-| coredns.corefile | object | `{"enabled":true}` | CoreDNS configmap |
+| coredns.corefile | object | `{"enabled":true,"reload":{"enabled":true,"interval":"30s","jitter":"15s"}}` | CoreDNS configmap |
+| coredns.corefile.reload | object | `{"enabled":true,"interval":"30s","jitter":"15s"}` | Reload CoreDNS configmap when it changes https://coredns.io/plugins/reload/ |
 | coredns.deployment.skipConfig | bool | `true` | Skip CoreDNS creation and uses the one shipped by k8gb instead |
 | coredns.image.repository | string | `"absaoss/k8s_crd"` | CoreDNS CRD plugin image |
 | coredns.image.tag | string | `"v0.1.2"` | image tag |
@@ -75,7 +76,7 @@ For Kubernetes `< 1.19` use this chart and k8gb in version `0.8.8` or lower.
 | coredns.resources.requests.cpu | string | `"100m"` |  |
 | coredns.resources.requests.memory | string | `"128Mi"` |  |
 | coredns.securityContext | object | `{"capabilities":{"add":[]}}` | Disables all permissions since we don't open privileged ports |
-| coredns.servers | list | `[{"plugins":[{"name":"prometheus","parameters":"0.0.0.0:9153"}],"port":5353,"servicePort":53}]` | Only meant to open the correct service and container ports, has no other impact on the coredns configuration |
+| coredns.servers | list | `[{"plugins":[{"name":"prometheus","parameters":"0.0.0.0:9153"}],"port":5353,"servicePort":53,"zones":[{"use_tcp":true,"zone":"."}]}]` | Only meant to open the correct service and container ports, has no other impact on the coredns configuration |
 | coredns.serviceAccount | object | `{"create":true,"name":"coredns"}` | Creates serviceAccount for coredns |
 | coredns.serviceType | string | `"ClusterIP"` | If the value is LoadBalancer, the IP addresses of the cluster will be loaded from the CoreDNS service; otherwise, they will be loaded from the first ingress marked with the label "k8gb.io/ip-source=true". |
 | extdns.domainFilters[0] | string | `"example.com"` |  |
@@ -95,7 +96,7 @@ For Kubernetes `< 1.19` use this chart and k8gb in version `0.8.8` or lower.
 | externaldns.extraEnv | list | `[]` | extra environment variables |
 | externaldns.extraVolumeMounts | list | `[]` | extra volume mounts |
 | externaldns.extraVolumes | list | `[]` | extra volumes |
-| externaldns.image | string | `"registry.k8s.io/external-dns/external-dns:v0.17.0"` | external-dns image repo:tag It is important to use the image from k8gb external-dns fork to get the full functionality. See links below https://github.com/k8gb-io/external-dns https://github.com/k8gb-io/external-dns/pkgs/container/external-dns |
+| externaldns.image | string | `"registry.k8s.io/external-dns/external-dns:v0.18.0"` | external-dns image repo:tag It is important to use the image from k8gb external-dns fork to get the full functionality. See links below https://github.com/k8gb-io/external-dns https://github.com/k8gb-io/external-dns/pkgs/container/external-dns |
 | externaldns.interval | string | `"20s"` | external-dns sync interval |
 | externaldns.resources.limits.cpu | string | `"500m"` |  |
 | externaldns.resources.limits.memory | string | `"128Mi"` |  |
@@ -104,6 +105,7 @@ For Kubernetes `< 1.19` use this chart and k8gb in version `0.8.8` or lower.
 | externaldns.securityContext.runAsNonRoot | bool | `true` |  |
 | externaldns.securityContext.runAsUser | int | `1000` | For more options consult https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#securitycontext-v1-core |
 | global.imagePullSecrets | list | `[]` | Reference to one or more secrets to be used when pulling images ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
+| infoblox.dnsView | string | `"default"` | DNS view to use for zone operations |
 | infoblox.enabled | bool | `false` | infoblox provider enabled |
 | infoblox.gridHost | string | `"10.0.0.1"` | WAPI address |
 | infoblox.httpPoolConnections | int | `10` | Size of connections pool |
@@ -136,6 +138,7 @@ For Kubernetes `< 1.19` use this chart and k8gb in version `0.8.8` or lower.
 | k8gb.securityContext.runAsNonRoot | bool | `true` | For more options consult https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#securitycontext-v1-core |
 | k8gb.securityContext.runAsUser | int | `1000` |  |
 | k8gb.serviceMonitor | object | `{"enabled":false}` | enable ServiceMonitor |
+| k8gb.tolerations | array | `[]` | Tolerations to apply to the k8gb operator deployment |
 | k8gb.validatingAdmissionPolicy | object | `{"enabled":false}` | enable validating admission policies |
 | ns1.enabled | bool | `false` | Enable NS1 provider |
 | ns1.ignoreSSL | bool | `false` | optional custom NS1 API endpoint for on-prem setups endpoint: https://api.nsone.net/v1/ |

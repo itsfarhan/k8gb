@@ -26,9 +26,6 @@
                 "infoblox": {
                     "$ref": "#/definitions/Infoblox"
                 },
-                "route53": {
-                    "$ref": "#/definitions/Route53"
-                },
                 "ns1": {
                     "$ref": "#/definitions/Ns1"
                 },
@@ -110,9 +107,7 @@
                     "$ref": "#/definitions/Resources"
                 },
                 "corefile": {
-                    "enabled": {
-                        "type": "boolean"
-                    }
+                    "$ref": "#/definitions/CorednsCorefile"
                 }
             },
             "title": "Coredns"
@@ -162,6 +157,38 @@
                 "name"
             ],
             "title": "ServiceAccount"
+        },
+        "CorednsCorefile": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "reload": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "interval": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "jitter": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    },
+                    "required": [
+                        "enabled",
+                        "interval",
+                        "jitter"
+                    ]
+                }
+            },
+            "title": "Corefile"
         },
         "Externaldns": {
             "type": "object",
@@ -292,6 +319,10 @@
                 "httpPoolConnections": {
                     "type": "integer",
                     "minimum": 0
+                },
+                "dnsView": {
+                  "type": "string",
+                  "description": "DNS view to use for zone operations"
                 }
             },
             "required": [
@@ -380,6 +411,53 @@
                 },
                 "resources": {
                     "$ref": "#/definitions/Resources"
+                },
+                "tolerations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "operator": {
+                                "type": "string",
+                                "enum": ["Exists", "Equal"]
+                            },
+                            "value": {
+                                "type": "string"
+                            },
+                            "effect": {
+                                "type": "string",
+                                "enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+                            },
+                            "tolerationSeconds": {
+                                "type": "integer"
+                            }
+                        },
+                        "anyOf": [
+                            {
+                            "properties": {
+                                "operator": {"const": "Exists"}
+                                },
+                            "not": {
+                                "required": ["value"]
+                                }
+                            },
+                            {
+                            "properties": {
+                                "operator": {"const": "Equal"}
+                                },
+                            "required": ["value"]
+                            },
+                            {
+                            "not": {
+                                "required": ["operator"]
+                                }
+                            }
+                        ],
+                        "additionalProperties": false
+                    }
                 }
             },
             "required": [
@@ -654,59 +732,6 @@
                 }
             },
             "title": "Rfc2136authGssTsigCreds"
-        },
-        "Route53": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "enabled": {
-                    "type": "boolean"
-                },
-                "hostedZoneID": {
-                    "type": "string",
-                    "minLength": 2
-                },
-                "irsaRole": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "pattern": "^arn:aws:iam:.+$",
-                            "minLength": 20
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
-                },
-                "secret": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "minLength": 1
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
-                },
-                "assumeRoleArn": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "pattern": "^arn:aws:iam:.+$",
-                            "minLength": 20
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
-                }
-            },
-            "required": [
-                "hostedZoneID",
-                "irsaRole"
-            ],
-            "title": "Route53"
         },
         "AzureDNS": {
             "type": "object",
