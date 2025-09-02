@@ -67,3 +67,4 @@ jobs:
               "downstreamRepo": "k8gb-io/community-operators-prod",
               "upstreamRepo": "redhat-openshift-ecosystem/community-operators-prod"
             }
+ 
