@@ -112,8 +112,7 @@ For Kubernetes `< 1.19` use this chart and k8gb in version `0.8.8` or lower.
 | k8gb.securityContext.runAsNonRoot | bool | `true` | For more options consult https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#securitycontext-v1-core |
 | k8gb.securityContext.runAsUser | int | `1000` |  |
 | k8gb.serviceMonitor | object | `{"enabled":false}` | enable ServiceMonitor |
-| k8gb.tolerations | list | `[]` | Tolerations to apply to the k8gb operator deployment for example:   tolerations:   - key: foo.bar.com/role     operator: Equal     value: master     effect: NoSchedule |
-| k8gb.validatingAdmissionPolicy | object | `{"enabled":false}` | enable validating admission policies |
+| k8gb.tolerations | array | `[]` | Tolerations to apply to the k8gb operator deployment || k8gb.validatingAdmissionPolicy | object | `{"enabled":false}` | enable validating admission policies |
 | openshift.enabled | bool | `false` | Install OpenShift specific RBAC |
 | tracing.deployJaeger | bool | `false` | should the Jaeger be deployed together with the k8gb operator? In case of using another OpenTracing solution, make sure that configmap for OTEL agent has the correct exporters set up (`tracing.otelConfig`). |
 | tracing.enabled | bool | `false` | if the application should be sending the traces to OTLP collector (env var `TRACING_ENABLED`) |
