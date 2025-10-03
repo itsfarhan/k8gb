@@ -79,21 +79,21 @@ jobs:
         uses: itsfarhan/k3d-action@upgrade-k3d
         with:
           cluster-name: "edgedns"
-          k3d-version: v5.7.0
+          #k3d-version: v5.7.0
           args: -c k3d/edge-dns.yaml
 
       - name: Create 1st k3s Cluster
         uses: itsfarhan/k3d-action@upgrade-k3d
         with:
           cluster-name: "test-gslb1"
-          k3d-version: v5.7.0
+          #k3d-version: v5.7.0
           args: -c k3d/test-gslb1.yaml
 
       - name: Create 2nd k3s Cluster
         uses: itsfarhan/k3d-action@upgrade-k3d
         with:
           cluster-name: "test-gslb2"
-          k3d-version: v5.7.0
+          #k3d-version: v5.7.0
           args: -c k3d/test-gslb2.yaml
 
       - name: K8GB deployment
