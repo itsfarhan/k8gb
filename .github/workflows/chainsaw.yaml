@@ -43,11 +43,17 @@ jobs:
     runs-on: ubuntu-24.04
     needs: skip-check
     if: ${{ needs.skip-check.outputs.should_skip != 'true' }} && !contains( github.event.pull_request.labels.*.name, 'renovate')
+    strategy:
+      matrix:
+        k8s-version: ["v1.34.1","v1.33.5", "v1.32.9"]
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
+      - name: Update k3d configs for K8s ${{ matrix.k8s-version }}
+        run: |
+          sed -i 's/image:.*/image: docker.io\/rancher\/k3s:${{ matrix.k8s-version }}-k3s1/' k3d/test-gslb*.yaml k3d/edge-dns.yaml
 
       - name: Setup Chainsaw
         uses: kyverno/action-install-chainsaw@6354895e0f99ab23d3e38d85cf5c71b5dc21d727 # v0.2.13
@@ -67,6 +73,11 @@ jobs:
         with:
           version: v3.18.4
 
+      - name: Set VERSION environment variable
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      
       - name: Build artifacts
         uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6.4.0
         with:
@@ -76,25 +87,29 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create edgeDNS k3s Cluster
-        uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79
+        uses: itsfarhan/k3d-action@upgrade-k3d-v5.8.3
         with:
           cluster-name: "edgedns"
+          k3d-version: v5.7.0
           args: -c k3d/edge-dns.yaml
 
       - name: Create 1st k3s Cluster
-        uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79
+        uses: itsfarhan/k3d-action@upgrade-k3d-v5.8.3
         with:
           cluster-name: "test-gslb1"
+          k3d-version: v5.7.0
           args: -c k3d/test-gslb1.yaml
 
       - name: Create 2nd k3s Cluster
-        uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79
+        uses: itsfarhan/k3d-action@upgrade-k3d-v5.8.3
         with:
           cluster-name: "test-gslb2"
+          k3d-version: v5.7.0
           args: -c k3d/test-gslb2.yaml
 
       - name: K8GB deployment
         run: |
+          docker images | grep k8gb
           make deploy-test-version list-running-pods
           echo "Cluster 1 (eu):"
           kubectl get no -owide --context=k3d-test-gslb1
@@ -111,5 +126,5 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
-          name: chainsaw-logs
+          name: chainsaw-logs-k8s-${{ matrix.k8s-version }}
           path: ${{ github.workspace }}/tmp/chainsaw
