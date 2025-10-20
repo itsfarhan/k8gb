@@ -38,7 +38,7 @@ jobs:
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u itsfarhan --password-stdin
           for chart in charts/k8gb-*.tgz; do
             echo "Pushing chart $chart to OCI registry..."
-            helm push "$chart" "oci://ghcr.io/itsfarhan/charts"
+            helm push "$chart" "oci://ghcr.io/${{github.actor}}/charts"
           done
 
       # Temporarily commented for testing
