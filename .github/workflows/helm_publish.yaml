@@ -29,8 +29,8 @@ jobs:
 
       - name: Get charts from gh-pages
         run: |
-          git fetch origin gh-pages
-          git checkout gh-pages -- charts/
+          git fetch origin gh-pages:gh-pages
+          git checkout origin/gh-pages -- charts/
 
       - name: Push to OCI Registry
         run: |
