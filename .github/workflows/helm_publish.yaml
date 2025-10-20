@@ -36,7 +36,10 @@ jobs:
         run: |
           ls -la charts/
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u itsfarhan --password-stdin
-          helm push charts/k8gb-*.tgz oci://ghcr.io/itsfarhan/charts
+          for chart in charts/k8gb-*.tgz; do
+            echo "Pushing chart $chart to OCI registry..."
+            helm push "$chart" oci://ghcr.io/itsfarhan/charts
+          done
 
       # Temporarily commented for testing
       # - name: Create k3s cluster
