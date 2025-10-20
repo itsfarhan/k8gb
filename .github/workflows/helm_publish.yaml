@@ -21,15 +21,15 @@ jobs:
           fetch-depth: 0
       - uses: dave-mcconnell/helm-gh-pages-microservices@8478af5f0fd712cc0fb59f2c99e0688f3f591287
         with:
-          access-token: ${{ secrets.CR_TOKEN }}
+          access-token: ${{ secrets.GITHUB_TOKEN}}
           source-charts-folder: 'chart'
-          destination-repo: k8gb-io/k8gb
+          destination-repo: itsfarhan/k8gb
           destination-branch: gh-pages
 
       - name: Push to OCI Registry
         run: |
           git checkout gh-pages
-          echo ${{ secrets.CR_TOKEN }} | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
           helm push charts/k8gb-*.tgz oci://ghcr.io/k8gb-io/charts
 
       - name: Create k3s cluster
