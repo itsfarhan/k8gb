@@ -19,7 +19,7 @@ jobs:
   publish:
     runs-on: ubuntu-24.04
     env:
-      OCI_REPO: oci://ghcr.io/k8gb-io/charts
+      OCI_REPO: oci://ghcr.io/itsfarhan/charts
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
@@ -34,7 +34,7 @@ jobs:
         with:
           access-token: ${{ secrets.CR_TOKEN }}
           source-charts-folder: 'chart'
-          destination-repo: k8gb-io/k8gb
+          destination-repo: itsfarhan/k8gb
           destination-branch: gh-pages
 
       - name: Install Cosign
@@ -51,14 +51,14 @@ jobs:
           git fetch origin gh-pages
           git checkout origin/gh-pages -- charts/
           ls -la charts/
-          OCI_REPO="${OCI_REPO:-oci://ghcr.io/k8gb-io/charts}"
+          OCI_REPO="${OCI_REPO:-oci://ghcr.io/itsfarhan/charts}"
           for chart in charts/k8gb-*.tgz; do
             if [ -f "$chart" ]; then
               PUSH_OUTPUT=$(helm push "$chart" "$OCI_REPO" 2>&1)
               DIGEST=$(echo "$PUSH_OUTPUT" | grep -oE 'sha256:[a-f0-9]{64}' | head -1)
               if [ -n "$DIGEST" ]; then
                 # Sign using digest
-                CHART_REF="ghcr.io/k8gb-io/charts/k8gb@${DIGEST}"
+                CHART_REF="ghcr.io/itsfarhan/charts/k8gb@${DIGEST}"
                 echo "Signing with digest: $CHART_REF"
                 if cosign sign --yes "$CHART_REF"; then
                   echo "Successfully signed: $CHART_REF"
@@ -70,7 +70,7 @@ jobs:
                 # Incase digest didnt worked then tag signing
                 CHART_NAME=$(basename "$chart" .tgz)
                 CHART_VERSION=$(echo "$CHART_NAME" | sed 's/k8gb-//')
-                CHART_REF="ghcr.io/k8gb-io/charts/k8gb:${CHART_VERSION}"
+                CHART_REF="ghcr.io/itsfarhan/charts/k8gb:${CHART_VERSION}"
                 echo "Signing with tag: $CHART_REF"
                 if cosign sign --yes "$CHART_REF"; then
                   echo "Successfully signed: $CHART_REF"
