@@ -81,7 +81,7 @@ jobs:
               fi              
               echo "Verifying signature for: $CHART_REF"
               cosign verify "$CHART_REF" \
-                --certificate-identity "https://github.com/k8gb-io/k8gb/.github/workflows/helm_publish.yaml@refs/tags/v0.16.0" \
+                --certificate-identity "https://github.com/k8gb-io/k8gb/.github/workflows/helm_publish.yaml@{{github.ref}}" \
                 --certificate-oidc-issuer "https://token.actions.githubusercontent.com"  
             fi
           done
