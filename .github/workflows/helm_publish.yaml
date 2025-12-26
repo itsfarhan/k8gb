@@ -81,7 +81,7 @@ jobs:
               fi
               echo "Signing with digest: $CHART_REF"
               cosign sign --yes "$CHART_REF"
-              PUSHED_CHARTS = PUSHED_CHARTS + "$CHART_REF"
+              PUSHED_CHARTS+=("$CHART_REF")
             fi
           done
           echo "Verifying all pushed charts..."
