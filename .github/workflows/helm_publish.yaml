@@ -88,7 +88,7 @@ jobs:
           for chart_ref in "${PUSHED_CHARTS[@]}"; do
             echo "Verifying: $chart_ref"
             cosign verify "$chart_ref" \
-              --certificate-identity "https://github.com/k8gb-io/k8gb/.github/workflows/helm_publish.yaml@${{ github.ref }}" \
+              --certificate-identity "https://github.com/itsfarhan/k8gb/.github/workflows/helm_publish.yaml@${{ github.ref }}" \
               --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
           done
           
