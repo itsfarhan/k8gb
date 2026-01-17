@@ -1,17 +1,9 @@
-/* ==========================================================================
-   K8GB Documentation Site Styles
-   ========================================================================== */
-
-/* Search Component
-   ========================================================================== */
-.md-header .md-search {
+.md-search {
   max-width: 280px;
-  margin-right: 0;
+  margin-right: 0 !important;
 }
 
-/* Header Layout
-   ========================================================================== */
-.md-header .md-header__inner.md-grid {
+.md-header__inner.md-grid {
   max-width: 61rem !important;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -23,7 +15,7 @@
 }
 
 @media screen and (min-width: 76.25em) {
-  .md-header .md-header__inner.md-grid {
+  .md-header__inner.md-grid {
     max-width: 76.25rem !important;
     padding-left: 7.6rem !important;
     padding-right: 13.1rem !important;
@@ -31,14 +23,12 @@
 }
 
 @media screen and (min-width: 60em) {
-  .md-header .md-header__inner.md-grid {
+  .md-header__inner.md-grid {
     padding-right: 13.1rem !important;
   }
 }
 
-/* Logo Component
-   ========================================================================== */
-.md-header .md-header__button.md-logo {
+.md-header__button.md-logo {
   display: flex !important;
   flex-shrink: 0 !important;
   margin: 0 !important;
@@ -47,32 +37,30 @@
   visibility: visible !important;
 }
 
-.md-header .md-header__button.md-logo .md-logo img,
-.md-header .md-header__button.md-logo .md-logo svg {
+.md-header__button.md-logo .md-logo img,
+.md-header__button.md-logo .md-logo svg {
   display: block !important;
   height: 1.2rem !important;
   width: auto !important;
 }
 
-/* Site Title
-   ========================================================================== */
-.md-header .md-header__title {
+.md-header__title {
   display: flex !important;
-  flex: 0 1 auto !important;
+  flex: 0 1 auto !important;  
   opacity: 1 !important;
   visibility: visible !important;
   margin: 0 !important;
   padding: 0 !important;
   min-width: 0 !important;
-  max-width: 400px !important;
+  max-width: 400px !important;  
 }
 
-.md-header .md-header__ellipsis {
+.md-header__ellipsis {
   display: flex !important;
   min-width: 0 !important;
 }
 
-.md-header .md-header__topic {
+.md-header__topic {
   display: block !important;
   opacity: 1 !important;
   position: static !important;
@@ -80,7 +68,7 @@
   transition: none !important;
 }
 
-.md-header .md-header__topic .md-ellipsis {
+.md-header__topic .md-ellipsis {
   display: block !important;
   font-size: 0.8rem !important;
   white-space: nowrap !important;
@@ -88,21 +76,18 @@
   text-overflow: ellipsis !important;
 }
 
-/* Header Controls
-   ========================================================================== */
-.md-header .md-header__option {
+.md-header__option {
   flex: 0 0 auto !important;
   margin-left: auto !important;
   margin-right: 0 !important;
 }
 
-.md-header .md-header__source {
+.md-header__source {
   flex: 0 0 auto !important;
   margin: 0 !important;
 }
 
-/* Source Container (GitHub Integration)
-   ========================================================================== */
+/* Source Container (GitHub Integration) */
 .k8gb-source-container {
   display: flex;
   align-items: center;
@@ -113,8 +98,7 @@
   max-width: none !important;
 }
 
-/* Star Button Component
-   ========================================================================== */
+/* Star Button Component */
 .k8gb-star-button {
   display: inline-flex;
   align-items: center;
@@ -141,16 +125,13 @@
   flex-shrink: 0;
 }
 
-/* Mobile Navigation
-   ========================================================================== */
+/* Mobile Navigation */
 @media screen and (min-width: 76.25em) {
   .md-header__button[for="__drawer"] {
     display: none;
   }
 }
 
-/* Footer Component
-   ========================================================================== */
 .md-footer {
   background-color: var(--md-primary-fg-color);
 }
@@ -197,8 +178,6 @@
   }
 }
 
-/* Color System & CSS Custom Properties
-   ========================================================================== */
 :root {
   --k8gb-border: hsl(214.3 31.8% 85%);
   --k8gb-muted: hsl(210 40% 98%);
@@ -208,7 +187,7 @@
   --k8gb-accent: hsl(210 40% 98%);
   --k8gb-accent-foreground: hsl(222.2 84% 4.9%);
   
-  /* Custom K8GB red theme */
+  /* Custom darker red override */
   --md-primary-fg-color: hsl(0 70% 35%);
   --md-primary-fg-color--light: hsl(0 70% 45%);
   --md-primary-fg-color--dark: hsl(0 70% 25%);
@@ -228,8 +207,6 @@
   --md-primary-fg-color--dark: hsl(0 70% 35%);
 }
 
-/* Blog Components
-   ========================================================================== */
 .md-blog-post {
   background: var(--k8gb-card);
   border: 1px solid var(--k8gb-border);
@@ -367,8 +344,6 @@
   border-radius: 0.25rem;
 }
 
-/* Navigation & Content Components
-   ========================================================================== */
 .md-nav__link--active {
   background: var(--k8gb-accent);
   color: var(--k8gb-accent-foreground);
