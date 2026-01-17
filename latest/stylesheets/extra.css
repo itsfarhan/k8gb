@@ -335,25 +335,33 @@
   display: none !important;
 }
 
-/* Show version selector in header only - far right */
+/* Show version selector in header - between search and GitHub */
 .md-header .md-version {
   display: inline-flex !important;
   position: absolute;
-  right: 1rem;
+  right: 13rem;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 1;
 }
 
 /* Adjust for smaller screens */
 @media screen and (max-width: 76.24em) {
   .md-header .md-version {
-    right: 0.5rem;
+    right: 9rem;
   }
 }
 
 @media screen and (max-width: 60em) {
   .md-header .md-version {
-    right: 0.5rem;
+    right: 6rem;
     font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 44em) {
+  .md-header .md-version {
+    right: 3rem;
+    font-size: 0.65rem;
   }
 }
