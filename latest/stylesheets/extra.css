@@ -46,13 +46,13 @@
 
 .md-header__title {
   display: flex !important;
-  flex: 0 1 auto !important;
+  flex: 0 1 auto !important;  
   opacity: 1 !important;
   visibility: visible !important;
   margin: 0 !important;
   padding: 0 !important;
   min-width: 0 !important;
-  max-width: 400px !important;
+  max-width: 400px !important;  
 }
 
 .md-header__ellipsis {
@@ -145,7 +145,7 @@
   --k8gb-card-foreground: hsl(222.2 84% 4.9%);
   --k8gb-accent: hsl(210 40% 98%);
   --k8gb-accent-foreground: hsl(222.2 84% 4.9%);
-
+  
   --md-primary-fg-color: hsl(0 70% 35%);
   --md-primary-fg-color--light: hsl(0 70% 45%);
   --md-primary-fg-color--dark: hsl(0 70% 25%);
@@ -159,7 +159,7 @@
   --k8gb-card-foreground: hsl(210 40% 98%);
   --k8gb-accent: hsl(217.2 32.6% 17.5%);
   --k8gb-accent-foreground: hsl(210 40% 98%);
-
+  
   --md-primary-fg-color: hsl(0 70% 45%);
   --md-primary-fg-color--light: hsl(0 70% 55%);
   --md-primary-fg-color--dark: hsl(0 70% 35%);
@@ -324,51 +324,4 @@
   .md-header__button[for="__drawer"] {
     display: none;
   }
-}
-
-/* Version selector in tabs */
-.md-tabs__item--version {
-  margin-left: auto !important;
-  padding-right: 1rem;
-}
-
-.md-tabs__item--version .md-version {
-  background-color: transparent !important;
-  color: var(--md-primary-bg-color) !important;
-  height: auto !important;
-  margin: 0 !important;
-}
-
-.md-tabs__item--version .md-version__current {
-  color: hsla(0, 0%, 100%, 0.9) !important;
-  font-weight: bold;
-  font-size: 0.7rem;
-}
-
-.md-tabs__item--version .md-version__current:hover {
-  color: white !important;
-}
-
-/* Ensure header elements flow correctly */
-.md-header__inner.md-grid {
-  gap: 8px !important;
-  flex-wrap: nowrap !important;
-}
-
-/* Hide star button and part of repo info on smaller screens to prevent wrapping */
-@media screen and (max-width: 65em) {
-
-  /* Hide the Star project button inside valid source partial */
-  .md-header__source>div>a:last-child {
-    display: none !important;
-  }
-
-  /* Hide repository text, keep icon */
-  .md-source__repository {
-    display: none !important;
-  }
-}
-
-.md-header__title {
-  flex: 0 1 auto !important;
 }
