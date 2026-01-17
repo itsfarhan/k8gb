@@ -83,7 +83,6 @@
       </div>
     
     
-
       <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <!-- Mobile navigation button -->
@@ -205,28 +204,6 @@
   </nav>
 </header>
     
-
-<!-- Move version selector to header, after search -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Find the version selector (created by mike)
-        const versionSelector = document.querySelector('.md-version');
-
-        if (versionSelector) {
-            // Find the header source (GitHub star button area)
-            const headerSource = document.querySelector('.md-header__source');
-
-            if (headerSource) {
-                // Move version selector before the GitHub button
-                headerSource.parentNode.insertBefore(versionSelector, headerSource);
-
-                // Add some styling to position it nicely
-                versionSelector.style.marginRight = '1rem';
-            }
-        }
-    });
-</script>
-
     <div class="md-container" data-md-component="container">
       
       
