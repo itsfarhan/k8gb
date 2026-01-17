@@ -1,96 +1,156 @@
+/* ==========================================================================
+   K8GB Documentation Site Styles
+   ========================================================================== */
+
+/* Search Component
+   ========================================================================== */
 .md-search {
   max-width: 280px;
-  margin-right: 0 !important;
+  margin-right: 0;
 }
 
+/* Header Layout
+   ========================================================================== */
 .md-header__inner.md-grid {
-  max-width: 61rem !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding-left: 0 !important;
-  padding-right: 1rem !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 16px !important;
+  max-width: 61rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+  padding-right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 @media screen and (min-width: 76.25em) {
   .md-header__inner.md-grid {
-    max-width: 76.25rem !important;
-    padding-left: 7.6rem !important;
-    padding-right: 13.1rem !important;
+    max-width: 76.25rem;
+    padding-left: 7.6rem;
+    padding-right: 13.1rem;
   }
 }
 
 @media screen and (min-width: 60em) {
   .md-header__inner.md-grid {
-    padding-right: 13.1rem !important;
+    padding-right: 13.1rem;
   }
 }
 
-.md-header__button.md-logo {
-  display: flex !important;
-  flex-shrink: 0 !important;
-  margin: 0 !important;
-  padding: 0.4rem !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+/* Logo Component
+   ========================================================================== */
+.md-header .md-header__button.md-logo {
+  display: flex;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.4rem;
+  opacity: 1;
+  visibility: visible;
 }
 
-.md-header__button.md-logo .md-logo img,
-.md-header__button.md-logo .md-logo svg {
-  display: block !important;
-  height: 1.2rem !important;
-  width: auto !important;
+.md-header .md-header__button.md-logo .md-logo img,
+.md-header .md-header__button.md-logo .md-logo svg {
+  display: block;
+  height: 1.2rem;
+  width: auto;
 }
 
-.md-header__title {
-  display: flex !important;
-  flex: 0 1 auto !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  min-width: 0 !important;
-  max-width: 400px !important;
+/* Site Title
+   ========================================================================== */
+.md-header .md-header__title {
+  display: flex;
+  flex: 0 1 auto;
+  opacity: 1;
+  visibility: visible;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  max-width: 400px;
 }
 
-.md-header__ellipsis {
-  display: flex !important;
-  min-width: 0 !important;
+.md-header .md-header__ellipsis {
+  display: flex;
+  min-width: 0;
 }
 
-.md-header__topic {
-  display: block !important;
-  opacity: 1 !important;
-  position: static !important;
-  transform: none !important;
-  transition: none !important;
+.md-header .md-header__topic {
+  display: block;
+  opacity: 1;
+  position: static;
+  transform: none;
+  transition: none;
 }
 
-.md-header__topic .md-ellipsis {
-  display: block !important;
-  font-size: 0.8rem !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+.md-header .md-header__topic .md-ellipsis {
+  display: block;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.md-header__option {
-  flex: 0 0 auto !important;
-  margin-left: auto !important;
-  margin-right: 0 !important;
+/* Header Controls
+   ========================================================================== */
+.md-header .md-header__option {
+  flex: 0 0 auto;
+  margin-left: auto;
+  margin-right: 0;
 }
 
-.md-header__source {
-  flex: 0 0 auto !important;
-  margin: 0 !important;
+.md-header .md-header__source {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* Source Container (GitHub Integration)
+   ========================================================================== */
+.k8gb-source-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .md-source__repository {
-  max-width: none !important;
+  max-width: none;
 }
 
+/* Star Button Component
+   ========================================================================== */
+.k8gb-star-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.26);
+  border-radius: 0.1rem;
+  color: white;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 400;
+  white-space: nowrap;
+  min-height: 1.8rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.k8gb-star-button:hover {
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.k8gb-star-button svg {
+  flex-shrink: 0;
+}
+
+/* Mobile Navigation
+   ========================================================================== */
+@media screen and (min-width: 76.25em) {
+  .md-header__button[for="__drawer"] {
+    display: none;
+  }
+}
+
+/* Footer Component
+   ========================================================================== */
 .md-footer {
   background-color: var(--md-primary-fg-color);
 }
@@ -137,6 +197,8 @@
   }
 }
 
+/* Color System & CSS Custom Properties
+   ========================================================================== */
 :root {
   --k8gb-border: hsl(214.3 31.8% 85%);
   --k8gb-muted: hsl(210 40% 98%);
@@ -145,7 +207,8 @@
   --k8gb-card-foreground: hsl(222.2 84% 4.9%);
   --k8gb-accent: hsl(210 40% 98%);
   --k8gb-accent-foreground: hsl(222.2 84% 4.9%);
-
+  
+  /* Custom K8GB red theme */
   --md-primary-fg-color: hsl(0 70% 35%);
   --md-primary-fg-color--light: hsl(0 70% 45%);
   --md-primary-fg-color--dark: hsl(0 70% 25%);
@@ -159,12 +222,14 @@
   --k8gb-card-foreground: hsl(210 40% 98%);
   --k8gb-accent: hsl(217.2 32.6% 17.5%);
   --k8gb-accent-foreground: hsl(210 40% 98%);
-
+  
   --md-primary-fg-color: hsl(0 70% 45%);
   --md-primary-fg-color--light: hsl(0 70% 55%);
   --md-primary-fg-color--dark: hsl(0 70% 35%);
 }
 
+/* Blog Components
+   ========================================================================== */
 .md-blog-post {
   background: var(--k8gb-card);
   border: 1px solid var(--k8gb-border);
@@ -302,6 +367,8 @@
   border-radius: 0.25rem;
 }
 
+/* Navigation & Content Components
+   ========================================================================== */
 .md-nav__link--active {
   background: var(--k8gb-accent);
   color: var(--k8gb-accent-foreground);
@@ -318,62 +385,4 @@
   border-radius: 0.5rem;
   border: 1px solid var(--k8gb-border);
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-}
-
-@media screen and (min-width: 76.25em) {
-  .md-header__button[for="__drawer"] {
-    display: none;
-  }
-}
-
-/* ============================================
-   VERSION SELECTOR POSITIONING
-   ============================================ */
-
-/* Hide ALL version selectors first */
-.md-version {
-  display: none !important;
-}
-
-/* Only show version selector when it's inside the header */
-.md-header .md-version {
-  display: inline-flex !important;
-  position: fixed !important;
-  right: 9.5rem !important;
-  top: 0.5rem !important;
-  z-index: 10 !important;
-}
-
-/* Move Star project button to the far right */
-.md-header__source {
-  margin-right: 1rem !important;
-}
-
-/* Adjust for smaller screens */
-@media screen and (max-width: 76.24em) {
-  .md-header .md-version {
-    right: 7rem !important;
-  }
-}
-
-@media screen and (max-width: 60em) {
-  .md-header .md-version {
-    right: 5rem !important;
-    font-size: 0.7rem !important;
-  }
-
-  .md-header__source {
-    margin-right: 0.5rem !important;
-  }
-}
-
-@media screen and (max-width: 44em) {
-  .md-header .md-version {
-    right: 3rem !important;
-    font-size: 0.65rem !important;
-  }
-
-  .md-header__source {
-    margin-right: 0.25rem !important;
-  }
 }
