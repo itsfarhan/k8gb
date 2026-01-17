@@ -330,38 +330,37 @@
    VERSION SELECTOR POSITIONING
    ============================================ */
 
-/* Hide version selector from tabs area */
-.md-tabs .md-version {
+/* Hide ALL version selectors first */
+.md-version {
   display: none !important;
 }
 
-/* Show version selector in header - between search and GitHub */
+/* Only show version selector when it's inside the header */
 .md-header .md-version {
   display: inline-flex !important;
-  position: absolute;
-  right: 13rem;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
+  position: fixed !important;
+  right: 13rem !important;
+  top: 0.6rem !important;
+  z-index: 10 !important;
 }
 
 /* Adjust for smaller screens */
 @media screen and (max-width: 76.24em) {
   .md-header .md-version {
-    right: 9rem;
+    right: 9rem !important;
   }
 }
 
 @media screen and (max-width: 60em) {
   .md-header .md-version {
-    right: 6rem;
-    font-size: 0.7rem;
+    right: 6rem !important;
+    font-size: 0.7rem !important;
   }
 }
 
 @media screen and (max-width: 44em) {
   .md-header .md-version {
-    right: 3rem;
-    font-size: 0.65rem;
+    right: 3rem !important;
+    font-size: 0.65rem !important;
   }
 }
