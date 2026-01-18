@@ -2,7 +2,7 @@
 :root {
   --md-primary-fg-color: #7b0000 !important;
   --md-primary-fg-color--light: #8b0000 !important;
-  --md-primary-fg-color--dark: #5b0000 !important;
+  --md-primary-fg-color--dark: #e53935 !important;
 }
 
 /* Force Deep Red Header - Multiple Selectors for Maximum Specificity */
