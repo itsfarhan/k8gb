@@ -112,3 +112,63 @@
   color: white !important;
   border-bottom-color: white !important;
 }
+/* Star Banner Styling */
+.star-banner {
+  background: linear-gradient(135deg, #7b0000 0%, #c62828 100%);
+  color: white;
+  padding: 2rem 1rem;
+  margin: 2rem 0;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(123, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.star-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.star-content p {
+  margin: 0.5rem 0;
+  opacity: 0.9;
+}
+
+.star-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: white !important;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none !important;
+  font-weight: 600;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.star-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.star-icon {
+  fill: currentColor;
+}
+
+.star-subtext {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 0.5rem !important;
+}
+
+/* Dark theme adjustments */
+[data-md-color-scheme="slate"] .star-banner {
+  background: linear-gradient(135deg, #c62828 0%, #e53935 100%);
+  box-shadow: 0 4px 20px rgba(198, 40, 40, 0.4);
+}
