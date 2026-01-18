@@ -1,8 +1,8 @@
-/* K8GB Deep Red Theme */
+/* K8GB Deep Red Theme - Darker Red */
 :root {
-  --md-primary-fg-color: #b71c1c !important;
-  --md-primary-fg-color--light: #e53935 !important;
-  --md-primary-fg-color--dark: #8b0000 !important;
+  --md-primary-fg-color: #7b0000 !important;
+  --md-primary-fg-color--light: #8b0000 !important;
+  --md-primary-fg-color--dark: #5b0000 !important;
 }
 
 /* Force Deep Red Header - Multiple Selectors for Maximum Specificity */
@@ -10,16 +10,16 @@
 .md-header[data-md-component="header"],
 header.md-header,
 .md-header.md-header {
-  background-color: #b71c1c !important;
-  background: #b71c1c !important;
-  border-bottom: 1px solid #8b0000 !important;
+  background-color: #7b0000 !important;
+  background: #7b0000 !important;
+  border-bottom: 1px solid #5b0000 !important;
 }
 
 /* Override any Material theme defaults */
 [data-md-color-scheme="default"] .md-header,
 [data-md-color-scheme="slate"] .md-header {
-  background-color: #b71c1c !important;
-  background: #b71c1c !important;
+  background-color: #7b0000 !important;
+  background: #7b0000 !important;
 }
 
 /* Ensure all header text is white */
@@ -31,19 +31,34 @@ header.md-header,
   color: white !important;
 }
 
-/* Search styling */
+/* Search styling - Fix visibility in both themes */
 .md-header .md-search__input {
   color: white !important;
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
 .md-header .md-search__input::placeholder {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Version selector */
-.md-version__current {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+/* Search input focus state */
+.md-header .md-search__input:focus {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
   color: white !important;
+}
+
+/* Version selector - Better styling */
+.md-version__current {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: white !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+}
+
+.md-version__current:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
 }
