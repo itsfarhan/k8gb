@@ -1,17 +1,25 @@
-/* Force K8GB Red Header - Override Material's Blue */
-[data-md-color-primary="deep-red"] .md-header {
-  background-color: #c62828 !important;
+/* K8GB Deep Red Theme */
+:root {
+  --md-primary-fg-color: #b71c1c !important;
+  --md-primary-fg-color--light: #e53935 !important;
+  --md-primary-fg-color--dark: #8b0000 !important;
 }
 
-.md-header {
-  background-color: #c62828 !important;
-  background: #c62828 !important;
+/* Force Deep Red Header - Multiple Selectors for Maximum Specificity */
+.md-header,
+.md-header[data-md-component="header"],
+header.md-header,
+.md-header.md-header {
+  background-color: #b71c1c !important;
+  background: #b71c1c !important;
+  border-bottom: 1px solid #8b0000 !important;
 }
 
-/* Override Material's default header background */
-.md-header[data-md-component="header"] {
-  background-color: #c62828 !important;
-  background: #c62828 !important;
+/* Override any Material theme defaults */
+[data-md-color-scheme="default"] .md-header,
+[data-md-color-scheme="slate"] .md-header {
+  background-color: #b71c1c !important;
+  background: #b71c1c !important;
 }
 
 /* Ensure all header text is white */
