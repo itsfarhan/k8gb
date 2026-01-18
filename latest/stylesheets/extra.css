@@ -24,9 +24,9 @@
   border-bottom: 1px solid #a52a2a !important;
 }
 
-/* Ensure all header text is white */
+/* Ensure all header text is white EXCEPT star button */
 .md-header .md-header__title,
-.md-header .md-header__button,
+.md-header .md-header__button:not(.md-header__star),
 .md-header .md-header__topic,
 .md-header .md-ellipsis,
 .md-header .md-nav__link {
@@ -172,8 +172,10 @@
   background: linear-gradient(135deg, #c62828 0%, #e53935 100%);
   box-shadow: 0 4px 20px rgba(198, 40, 40, 0.4);
 }
-/* Header Star Button - Golden with Text */
-.md-header__star {
+/* Header Star Button - Golden with Text - High Specificity */
+.md-header .md-header__star,
+.md-header .md-header__star:link,
+.md-header .md-header__star:visited {
   color: #ffd700 !important; /* Golden color */
   opacity: 0.9;
   transition: all 0.2s ease;
@@ -185,22 +187,24 @@
   text-decoration: none !important;
 }
 
-.md-header__star:hover {
+.md-header .md-header__star:hover {
   opacity: 1;
   background: rgba(255, 215, 0, 0.1);
   transform: scale(1.05);
+  color: #ffd700 !important;
 }
 
-.md-header__star .md-icon {
-  fill: currentColor;
+.md-header .md-header__star .md-icon {
+  fill: #ffd700 !important;
   width: 20px;
   height: 20px;
 }
 
-.md-header__star-text {
+.md-header .md-header__star-text {
   font-size: 0.8rem;
   font-weight: 500;
   white-space: nowrap;
+  color: #ffd700 !important;
 }
 
 /* Hide text on smaller screens to save space */
