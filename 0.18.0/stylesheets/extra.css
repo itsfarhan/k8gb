@@ -6,7 +6,7 @@
 }
 
 /* Theme-specific header colors */
-/* Light theme - keep dark red */
+/* Light theme - use dark red */
 [data-md-color-scheme="default"] .md-header,
 [data-md-color-scheme="default"] .md-header[data-md-component="header"],
 [data-md-color-scheme="default"] header.md-header {
@@ -15,7 +15,7 @@
   border-bottom: 1px solid #5b0000 !important;
 }
 
-/* Dark theme - use the red from the image (medium-bright red) */
+/* Dark theme - use the red */
 [data-md-color-scheme="slate"] .md-header,
 [data-md-color-scheme="slate"] .md-header[data-md-component="header"],
 [data-md-color-scheme="slate"] header.md-header {
@@ -80,4 +80,35 @@
 .md-version__current:hover {
   background: rgba(255, 255, 255, 0.25) !important;
   border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Navigation tabs styling */
+/* Light theme - dark red tabs */
+[data-md-color-scheme="default"] .md-tabs {
+  background-color: #7b0000 !important;
+  border-bottom: 1px solid #5b0000 !important;
+}
+
+[data-md-color-scheme="default"] .md-tabs__link {
+  color: white !important;
+}
+
+[data-md-color-scheme="default"] .md-tabs__link--active {
+  color: white !important;
+  border-bottom-color: white !important;
+}
+
+/* Dark theme - same red as header */
+[data-md-color-scheme="slate"] .md-tabs {
+  background-color: #c62828 !important;
+  border-bottom: 1px solid #a52a2a !important;
+}
+
+[data-md-color-scheme="slate"] .md-tabs__link {
+  color: white !important;
+}
+
+[data-md-color-scheme="slate"] .md-tabs__link--active {
+  color: white !important;
+  border-bottom-color: white !important;
 }
