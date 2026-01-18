@@ -172,17 +172,44 @@
   background: linear-gradient(135deg, #c62828 0%, #e53935 100%);
   box-shadow: 0 4px 20px rgba(198, 40, 40, 0.4);
 }
-/* Minimal Header Star Button */
+/* Header Star Button - Golden with Text */
 .md-header__star {
-  color: white !important;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+  color: #ffd700 !important; /* Golden color */
+  opacity: 0.9;
+  transition: all 0.2s ease;
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border-radius: 4px;
+  text-decoration: none !important;
 }
 
 .md-header__star:hover {
   opacity: 1;
+  background: rgba(255, 215, 0, 0.1);
+  transform: scale(1.05);
 }
 
 .md-header__star .md-icon {
   fill: currentColor;
+  width: 20px;
+  height: 20px;
+}
+
+.md-header__star-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Hide text on smaller screens to save space */
+@media (max-width: 960px) {
+  .md-header__star-text {
+    display: none;
+  }
+  
+  .md-header__star {
+    padding: 0 4px;
+  }
 }
