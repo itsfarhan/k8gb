@@ -15,13 +15,13 @@
   border-bottom: 1px solid #5b0000 !important;
 }
 
-/* Dark theme - use normal red for better content readability */
+/* Dark theme - use the red from the image (medium-bright red) */
 [data-md-color-scheme="slate"] .md-header,
 [data-md-color-scheme="slate"] .md-header[data-md-component="header"],
 [data-md-color-scheme="slate"] header.md-header {
-  background-color: #d32f2f !important;
-  background: #d32f2f !important;
-  border-bottom: 1px solid #b71c1c !important;
+  background-color: #c62828 !important;
+  background: #c62828 !important;
+  border-bottom: 1px solid #a52a2a !important;
 }
 
 /* Ensure all header text is white */
