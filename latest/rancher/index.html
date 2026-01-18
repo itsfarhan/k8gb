@@ -201,6 +201,12 @@
   </a>
 
       </div>
+      <!-- Minimal Star Button -->
+      <a href="https://github.com/k8gb-io/k8gb" class="md-header__button md-header__star" title="Star K8GB on GitHub" target="_blank">
+        <svg class="md-icon" viewBox="0 0 16 16" width="16" height="16">
+          <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path>
+        </svg>
+      </a>
     
 
   </nav>
@@ -2312,7 +2318,6 @@
               
               <article class="md-content__inner md-typeset">
                 
-  
                   
 
 
@@ -2400,40 +2405,6 @@
 
 
                 
-  <!-- Floating Star Widget -->
-<a href="https://github.com/k8gb-io/k8gb" class="floating-star-widget" id="floating-star" target="_blank">
-  <svg class="star-icon" viewBox="0 0 16 16" width="16" height="16">
-    <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path>
-  </svg>
-  Star K8GB
-</a>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const floatingWidget = document.getElementById('floating-star');
-    let scrollTimeout;
-    
-    function handleScroll() {
-      const scrollY = window.scrollY;
-      
-      // Show widget after scrolling down 200px
-      if (scrollY > 200) {
-        floatingWidget.classList.add('show');
-      } else {
-        floatingWidget.classList.remove('show');
-      }
-    }
-    
-    // Throttle scroll events for better performance
-    window.addEventListener('scroll', function() {
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-      scrollTimeout = setTimeout(handleScroll, 10);
-    });
-  });
-</script>
-
               </article>
             </div>
           

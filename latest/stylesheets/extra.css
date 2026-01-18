@@ -172,74 +172,17 @@
   background: linear-gradient(135deg, #c62828 0%, #e53935 100%);
   box-shadow: 0 4px 20px rgba(198, 40, 40, 0.4);
 }
-/* Option 3: Floating Star Widget - Minimalistic & Top Position */
-.floating-star-widget {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-decoration: none !important;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-  font-size: 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Minimal Header Star Button */
+.md-header__star {
+  color: white !important;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
 }
 
-.floating-star-widget.show {
+.md-header__star:hover {
   opacity: 1;
-  transform: translateY(0);
 }
 
-.floating-star-widget:hover {
-  background: rgba(0, 0, 0, 0.9);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.floating-star-widget .star-icon {
+.md-header__star .md-icon {
   fill: currentColor;
-}
-
-/* Light theme - subtle colors */
-[data-md-color-scheme="default"] .floating-star-widget {
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-[data-md-color-scheme="default"] .floating-star-widget:hover {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Dark theme - keep it subtle */
-[data-md-color-scheme="slate"] .floating-star-widget {
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-}
-
-[data-md-color-scheme="slate"] .floating-star-widget:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .floating-star-widget {
-    top: 15px;
-    right: 15px;
-    padding: 6px 10px;
-    font-size: 0.8rem;
-  }
 }
