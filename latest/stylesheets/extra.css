@@ -1,12 +1,11 @@
-/* K8GB Deep Red Theme - Darker Red */
+/* K8GB Theme - Red color scheme for branding */
 :root {
   --md-primary-fg-color: #7b0000 !important;
   --md-primary-fg-color--light: #8b0000 !important;
   --md-primary-fg-color--dark: #e53935 !important;
 }
 
-/* Theme-specific header colors */
-/* Light theme - use dark red */
+/* Header styling */
 [data-md-color-scheme="default"] .md-header,
 [data-md-color-scheme="default"] .md-header[data-md-component="header"],
 [data-md-color-scheme="default"] header.md-header {
@@ -15,7 +14,6 @@
   border-bottom: 1px solid #5b0000 !important;
 }
 
-/* Dark theme - use the red */
 [data-md-color-scheme="slate"] .md-header,
 [data-md-color-scheme="slate"] .md-header[data-md-component="header"],
 [data-md-color-scheme="slate"] header.md-header {
@@ -24,7 +22,7 @@
   border-bottom: 1px solid #a52a2a !important;
 }
 
-/* Ensure all header text is white EXCEPT star button */
+/* Header text color (excluding star button) */
 .md-header .md-header__title,
 .md-header .md-header__button:not(.md-header__star),
 .md-header .md-header__topic,
@@ -33,8 +31,7 @@
   color: white !important;
 }
 
-/* Search styling - Theme-specific colors */
-/* Light theme - black text on white/light background */
+/* Search input styling */
 [data-md-color-scheme="default"] .md-header .md-search__input {
   color: #000 !important;
   background: rgba(255, 255, 255, 0.9) !important;
@@ -51,7 +48,6 @@
   color: #000 !important;
 }
 
-/* Dark theme - white text on dark background */
 [data-md-color-scheme="slate"] .md-header .md-search__input {
   color: white !important;
   background: rgba(255, 255, 255, 0.15) !important;
@@ -68,7 +64,7 @@
   color: white !important;
 }
 
-/* Version selector - Better styling */
+/* Version selector */
 .md-version__current {
   background: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.4) !important;
@@ -82,8 +78,7 @@
   border-color: rgba(255, 255, 255, 0.6) !important;
 }
 
-/* Navigation tabs styling */
-/* Light theme - dark red tabs */
+/* Navigation tabs */
 [data-md-color-scheme="default"] .md-tabs {
   background-color: #7b0000 !important;
   border-bottom: 1px solid #5b0000 !important;
@@ -98,7 +93,6 @@
   border-bottom-color: white !important;
 }
 
-/* Dark theme - same red as header */
 [data-md-color-scheme="slate"] .md-tabs {
   background-color: #c62828 !important;
   border-bottom: 1px solid #a52a2a !important;
@@ -112,7 +106,8 @@
   color: white !important;
   border-bottom-color: white !important;
 }
-/* Star Banner Styling */
+
+/* Homepage star banner */
 .star-banner {
   background: linear-gradient(135deg, #7b0000 0%, #c62828 100%);
   color: white;
@@ -167,16 +162,16 @@
   margin-top: 0.5rem !important;
 }
 
-/* Dark theme adjustments */
 [data-md-color-scheme="slate"] .star-banner {
   background: linear-gradient(135deg, #c62828 0%, #e53935 100%);
   box-shadow: 0 4px 20px rgba(198, 40, 40, 0.4);
 }
-/* Header Star Button - Golden with Text - High Specificity */
+
+/* Header star button */
 .md-header .md-header__star,
 .md-header .md-header__star:link,
 .md-header .md-header__star:visited {
-  color: #ffd700 !important; /* Golden color */
+  color: #ffd700 !important;
   opacity: 0.9;
   transition: all 0.2s ease;
   display: flex !important;
@@ -207,7 +202,7 @@
   color: #ffd700 !important;
 }
 
-/* Hide text on smaller screens to save space */
+/* Mobile responsive */
 @media (max-width: 960px) {
   .md-header__star-text {
     display: none;
