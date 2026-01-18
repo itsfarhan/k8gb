@@ -5,21 +5,23 @@
   --md-primary-fg-color--dark: #e53935 !important;
 }
 
-/* Force Deep Red Header - Multiple Selectors for Maximum Specificity */
-.md-header,
-.md-header[data-md-component="header"],
-header.md-header,
-.md-header.md-header {
+/* Theme-specific header colors */
+/* Light theme - keep dark red */
+[data-md-color-scheme="default"] .md-header,
+[data-md-color-scheme="default"] .md-header[data-md-component="header"],
+[data-md-color-scheme="default"] header.md-header {
   background-color: #7b0000 !important;
   background: #7b0000 !important;
   border-bottom: 1px solid #5b0000 !important;
 }
 
-/* Override any Material theme defaults */
-[data-md-color-scheme="default"] .md-header,
-[data-md-color-scheme="slate"] .md-header {
-  background-color: #7b0000 !important;
-  background: #7b0000 !important;
+/* Dark theme - use normal red for better content readability */
+[data-md-color-scheme="slate"] .md-header,
+[data-md-color-scheme="slate"] .md-header[data-md-component="header"],
+[data-md-color-scheme="slate"] header.md-header {
+  background-color: #d32f2f !important;
+  background: #d32f2f !important;
+  border-bottom: 1px solid #b71c1c !important;
 }
 
 /* Ensure all header text is white */
