@@ -1,18 +1,29 @@
-/* K8GB Red Header Theme - Force Override */
-.md-header {
-  background-color: var(--md-primary-fg-color) !important;
-  color: white !important;
+/* Force K8GB Red Header - Override Material's Blue */
+[data-md-color-primary="deep-red"] .md-header {
+  background-color: #c62828 !important;
 }
 
-/* Ensure all header elements are white */
+.md-header {
+  background-color: #c62828 !important;
+  background: #c62828 !important;
+}
+
+/* Override Material's default header background */
+.md-header[data-md-component="header"] {
+  background-color: #c62828 !important;
+  background: #c62828 !important;
+}
+
+/* Ensure all header text is white */
 .md-header .md-header__title,
 .md-header .md-header__button,
 .md-header .md-header__topic,
-.md-header .md-ellipsis {
+.md-header .md-ellipsis,
+.md-header .md-nav__link {
   color: white !important;
 }
 
-/* Search input styling */
+/* Search styling */
 .md-header .md-search__input {
   color: white !important;
   background: rgba(255, 255, 255, 0.1) !important;
@@ -22,7 +33,7 @@
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/* Version selector styling */
+/* Version selector */
 .md-version__current {
   background: rgba(255, 255, 255, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
