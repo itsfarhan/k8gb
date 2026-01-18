@@ -1,19 +1,30 @@
-/* K8GB Red Header Theme */
+/* K8GB Red Header Theme - Force Override */
 .md-header {
-  background-color: var(--md-primary-fg-color);
-  color: white;
+  background-color: var(--md-primary-fg-color) !important;
+  color: white !important;
 }
 
-/* Ensure header text is white */
-.md-header__title,
-.md-header__button,
-.md-search__input {
-  color: white;
+/* Ensure all header elements are white */
+.md-header .md-header__title,
+.md-header .md-header__button,
+.md-header .md-header__topic,
+.md-header .md-ellipsis {
+  color: white !important;
 }
 
-/* Version selector styling to match red theme */
+/* Search input styling */
+.md-header .md-search__input {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.md-header .md-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Version selector styling */
 .md-version__current {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
 }
