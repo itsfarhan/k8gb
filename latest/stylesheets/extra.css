@@ -31,19 +31,36 @@ header.md-header,
   color: white !important;
 }
 
-/* Search styling - Fix visibility in both themes */
-.md-header .md-search__input {
+/* Search styling - Theme-specific colors */
+/* Light theme - black text on white/light background */
+[data-md-color-scheme="default"] .md-header .md-search__input {
+  color: #000 !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-md-color-scheme="default"] .md-header .md-search__input::placeholder {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-md-color-scheme="default"] .md-header .md-search__input:focus {
+  background: rgba(255, 255, 255, 1) !important;
+  border-color: rgba(0, 0, 0, 0.4) !important;
+  color: #000 !important;
+}
+
+/* Dark theme - white text on dark background */
+[data-md-color-scheme="slate"] .md-header .md-search__input {
   color: white !important;
   background: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
-.md-header .md-search__input::placeholder {
+[data-md-color-scheme="slate"] .md-header .md-search__input::placeholder {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Search input focus state */
-.md-header .md-search__input:focus {
+[data-md-color-scheme="slate"] .md-header .md-search__input:focus {
   background: rgba(255, 255, 255, 0.2) !important;
   border-color: rgba(255, 255, 255, 0.5) !important;
   color: white !important;
