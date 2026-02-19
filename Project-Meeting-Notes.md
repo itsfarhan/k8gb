@@ -36,7 +36,61 @@ Join the [Zoom Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/92
 
 </details>
 
-<details open><summary><strong>Feb 4, 2026 #85</strong></summary>
+<details open><summary><strong>Feb 18, 2026 #86</strong></summary>
+
+## Feb 18, 2026 #86
+
+Zoom Recording: https://zoom.us/rec/share/ZEowP7Uv5fEf0tzsFBrzDdK8yT96vgM_FzQ07m5DZQe6-onEmanvK4UqOtxs2G6v.gI4bnuBgLYzr_qmP 
+
+On YouTube: [https://youtu.be/AtFT41qJDwc](https://youtu.be/AtFT41qJDwc)
+
+**Attendees**
+
+- Bradley Andersen
+- Yury Tsarev
+- Farhan Ahmed
+- Ayhan Dzhemalov
+
+**Agenda**
+
+- [k8gb project board](https://github.com/orgs/k8gb-io/projects/2/views/1)
+- **News**
+    - Project Lead Election finishes today - announcement tomorrow
+    - KubeCon
+      - We'll be at the Maintainer Summit 🛠️
+      - **Kiosk**: Tuesday 15:10 - 19:00 | Kiosk Number: P-12B | Location: Halls 1-5 | Project Pavilion 
+      - **Talks**:
+        - [Security Review Panel](https://sched.co/2EF6x)
+        - no lightning talk this time
+        - no Rejekts talks this time
+        - co-located talk waitlisted: _Building Unified Global Load Balancing for the Edge With k8gb_
+    - Incubation
+      - need to make sure everything on the [Incubation Application](https://github.com/cncf/toc/issues/1472) is up2date
+      - Incubating DD Review
+        - Governance review done ✅
+        - Tech review WIP
+        - ADOPTER reviews WIP
+- **Issue Review**
+  - incubation issues:
+    - https://github.com/k8gb-io/k8gb/issues/2195 - needs to be carefully
+    tested, let's get it into next release
+    - https://github.com/k8gb-io/k8gb/issues/2180 - looks simple, but not ...
+    let's organize a meeting with absa
+- **Community Update**
+  - next time
+- **Other**
+- **Action Items**
+  - @elohmrow:
+    - take first pass at https://github.com/k8gb-io/k8gb/issues/2219
+    - go through in progress on project board
+    - make sure we are all caught up on incubating tasks
+    - Project Lead Election announcement
+  - @ytsarev:
+    - organize meeting with absa around api change
+
+</details>
+
+<details><summary><strong>Feb 4, 2026 #85</strong></summary>
 
 ## Feb 4, 2026 #85
 
@@ -76,8 +130,9 @@ On YouTube: []()
 - **Other**
 - **Action Items**
 
+</details>
 
-<details><summary><strong>Feb 4, 2026 #85</strong></summary>
+<details><summary><strong>Jan 21, 2026 #84</strong></summary>
 
 ## Jan 21, 2026 #84
 
