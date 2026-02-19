@@ -2473,10 +2473,10 @@
 </ul>
 <h2 id="architecture-diagrams">Architecture Diagrams<a class="headerlink" href="#architecture-diagrams" title="Permanent link">&para;</a></h2>
 <h3 id="crossplane-function-health-monitoring-flow">Crossplane Function Health Monitoring Flow<a class="headerlink" href="#crossplane-function-health-monitoring-flow" title="Permanent link">&para;</a></h3>
-<p><img alt="Crossplane Function Health Monitoring" src="/docs/examples/crossplane/globalapp/assets/crossplane-function-health-monitoring.png" /></p>
+<p><img alt="Crossplane Function Health Monitoring" src="assets/crossplane-function-health-monitoring.png" /></p>
 <p>This diagram illustrates how the Crossplane function dynamically monitors GSLB health status and adjusts management policies. The function observes the GSLB resource status and conditionally sets management policies - when active and healthy, it enables full management (<code>managementPolicies: ["*"]</code>), otherwise it switches to observe-only mode (<code>managementPolicies: ["Observe"]</code>).</p>
 <h3 id="activepassive-cluster-management-policies">Active/Passive Cluster Management Policies<a class="headerlink" href="#activepassive-cluster-management-policies" title="Permanent link">&para;</a></h3>
-<p><img alt="Active Passive Cluster Policies" src="/docs/examples/crossplane/globalapp/assets/active-passive-cluster-policies.png" /></p>
+<p><img alt="Active Passive Cluster Policies" src="assets/active-passive-cluster-policies.png" /></p>
 <p>This diagram shows the management policy differences between Active and Passive clusters. The Active cluster (with green checkmark) has full management policies including Create, Delete, Observe, and Update capabilities. The Passive cluster (with red X) is restricted to Observe-only mode, ensuring it monitors health without making changes until it needs to become active during failover.</p>
 <h2 id="conference-presentation">Conference Presentation<a class="headerlink" href="#conference-presentation" title="Permanent link">&para;</a></h2>
 <p>This reference PoC architecture was presented at <strong>KubeCon China in Hong Kong 2025</strong>:</p>
