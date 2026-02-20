@@ -73,11 +73,25 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@286f3b13b1b49da4ac219696163fb8c1c93e1200 # v6.0.0
+
+      # Required for linux/arm64 builds on amd64 GitHub runners
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # Required for multi-arch builds and OCI attestations (SBOM/provenance)
+      # Default docker driver does not support --attest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
         with:
-          version: v1.7.0
-          args: release --rm-dist ${{ (!contains(github.ref_name, 'rc') && github.event_name != 'workflow_dispatch') && '--release-notes=changes' || '' }}
+          driver: docker-container
+          install: true
+          use: true
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6.4.0
+        with:
+          version: v2.12.7
+          args: release --clean ${{ (!contains(github.ref_name, 'rc') && github.event_name != 'workflow_dispatch') && '--release-notes=changes' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get container info
@@ -147,6 +161,40 @@ jobs:
         run: |
           rm -f cosign.key
 
+  container-scan:
+    name: Container Security Scan
+    needs: [release]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read  # for actions/checkout to fetch code
+      security-events: write  # Required to upload SARIF files to Security tab
+    env:
+      TAGS: "${{ needs.release.outputs.container_tags }}"
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Run Trivy vulnerability scanner on container image
+        uses: aquasecurity/trivy-action@0.33.1
+        continue-on-error: true  # Don't fail the release on vulnerabilities
+        with:
+          image-ref: 'docker.io/absaoss/k8gb:${{ github.ref_name }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+          scanners: 'vuln,secret,misconfig'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()  # Upload even if scan found issues
+        with:
+          sarif_file: 'trivy-results.sarif'
+
   provenance:
     name: provenance
     needs: [release]
@@ -182,7 +230,7 @@ jobs:
 
   slsa-summary:
     name: Release Summary
-    needs: [sbom, provenance, container-provenance, release]
+    needs: [sbom, provenance, container-provenance, container-scan, release]
     runs-on: ubuntu-24.04
     env:
       TAGS: "${{ needs.release.outputs.container_tags }}"

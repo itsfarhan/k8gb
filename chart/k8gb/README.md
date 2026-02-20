@@ -1,6 +1,6 @@
 # k8gb
 
-![Version: v0.16.0](https://img.shields.io/badge/Version-v0.16.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.16.0](https://img.shields.io/badge/AppVersion-v0.16.0-informational?style=flat-square)
+![Version: v0.18.0](https://img.shields.io/badge/Version-v0.18.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.18.0](https://img.shields.io/badge/AppVersion-v0.18.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes Global Balancer
 
@@ -35,8 +35,8 @@ Kubernetes: `>= 1.21.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://coredns.github.io/helm | coredns | 1.44.3 |
-| https://kubernetes-sigs.github.io/external-dns | extdns(external-dns) | 1.19.0 |
+| https://coredns.github.io/helm | coredns | 1.45.2 |
+| https://kubernetes-sigs.github.io/external-dns | extdns(external-dns) | 1.20.0 |
 
 #### Tested Environment Configurations:
 
@@ -45,7 +45,7 @@ Kubernetes: `>= 1.21.0-0`
 | Kubernetes Version               | >= 1.21                                                       |
 | Environment                      | Any conformant Kubernetes cluster on-prem or in cloud         |
 | Ingress Controller               | NGINX, Istio, AWS Load Balancer Controller                    |
-| EdgeDNS                          | Infoblox, Route53, NS1, CloudFlare, AzureDNS                  |
+| EdgeDNS                          | Infoblox, Route53, NS1, CloudFlare, AzureDNS, GCP Cloud DNS   |
 
 Note: k8gb is architected to run on top of any compliant Kubernetes cluster and Ingress controller. The table above lists solutions where we have tested and verified k8gb installation.
 
@@ -56,8 +56,8 @@ Note: k8gb is architected to run on top of any compliant Kubernetes cluster and 
 | coredns.corefile | object | `{"enabled":true,"reload":{"enabled":true,"interval":"30s","jitter":"15s"}}` | CoreDNS configmap |
 | coredns.corefile.reload | object | `{"enabled":true,"interval":"30s","jitter":"15s"}` | Reload CoreDNS configmap when it changes https://coredns.io/plugins/reload/ |
 | coredns.deployment.skipConfig | bool | `true` | Skip CoreDNS creation and uses the one shipped by k8gb instead |
-| coredns.image.repository | string | `"absaoss/k8s_crd"` | CoreDNS CRD plugin image |
-| coredns.image.tag | string | `"v0.1.2"` | image tag |
+| coredns.image.repository | string | `"k8gb-io.gateway.scarf.sh/absaoss/k8s_crd"` | CoreDNS CRD plugin image |
+| coredns.image.tag | string | `"v0.2.0"` | image tag |
 | coredns.isClusterService | bool | `false` | service: refer to https://www.k8gb.io/docs/service_upgrade.html for upgrading CoreDNS service steps |
 | coredns.resources.limits | object | `{"cpu":"100m","memory":"128Mi"}` | requests and limits for the coredns container |
 | coredns.resources.requests.cpu | string | `"100m"` |  |
@@ -79,6 +79,7 @@ Note: k8gb is architected to run on top of any compliant Kubernetes cluster and 
 | extdns.sources[0] | string | `"crd"` |  |
 | extdns.txtOwnerId | string | `"k8gb-<GEOTAG>"` |  |
 | extdns.txtPrefix | string | `"k8gb-<GEOTAG>-"` |  |
+| gatewayapi.enabled | bool | `true` | install gatewayapi RBAC |
 | global.imagePullSecrets | list | `[]` | Reference to one or more secrets to be used when pulling images ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | infoblox.dnsView | string | `"default"` | DNS view to use for zone operations |
 | infoblox.enabled | bool | `false` | infoblox provider enabled |
@@ -96,7 +97,7 @@ Note: k8gb is architected to run on top of any compliant Kubernetes cluster and 
 | k8gb.edgeDNSServers[0] | string | `"1.1.1.1"` | use this DNS server as a main resolver to enable cross k8gb DNS based communication |
 | k8gb.exposeMetrics | bool | `false` | Exposing metrics |
 | k8gb.extGslbClustersGeoTags | string | `"eu,us"` | Comma-separated list of geotags for external K8GB clusters. These are arbitrary, user-defined identifiers (e.g., "eu,us" or "dc2,dc3") used for coordination between K8GB instances If the value remains empty, dynamic geotags extracted from the NS records on the edge DNS will be used. |
-| k8gb.imageRepo | string | `"docker.io/absaoss/k8gb"` | image repository |
+| k8gb.imageRepo | string | `"k8gb-io.gateway.scarf.sh/absaoss/k8gb"` | image repository |
 | k8gb.imageTag |  string  | `nil` | image tag defaults to Chart.AppVersion, see Chart.yaml, but can be overrided with imageTag key |
 | k8gb.log.format | string | `"simple"` | log format (simple,json) |
 | k8gb.log.level | string | `"info"` | log level (panic,fatal,error,warn,info,debug,trace) |
@@ -121,9 +122,9 @@ Note: k8gb is architected to run on top of any compliant Kubernetes cluster and 
 | tracing.endpoint | string | `"localhost:4318"` | `host:port` where the spans from the applications (traces) should be sent, sets the `OTEL_EXPORTER_OTLP_ENDPOINT` env var This is not the final destination where all the traces are going. Otel collector has its configuration in the associated configmap (`tracing.otelConfig`). |
 | tracing.jaegerImage.pullPolicy | string | `"Always"` |  |
 | tracing.jaegerImage.repository | string | `"jaegertracing/all-in-one"` | if `tracing.deployJaeger==true` this image will be used in the deployment for Jaeger |
-| tracing.jaegerImage.tag | string | `"1.74.0"` |  |
+| tracing.jaegerImage.tag | string | `"1.76.0"` |  |
 | tracing.otelConfig | string | `nil` | configuration for OTEL collector, this will be represented as configmap called `agent-config` |
 | tracing.samplingRatio | string | `nil` | float representing the ratio of how often the span should be kept/dropped (env var `TRACING_SAMPLING_RATIO`) if not specified, the AlwaysSample will be used which is the same as 1.0. `0.1` would mean that 10% of samples will be kept |
 | tracing.sidecarImage.pullPolicy | string | `"Always"` |  |
 | tracing.sidecarImage.repository | string | `"otel/opentelemetry-collector"` | OpenTelemetry collector into which the k8gb operator sends the spans. It can be further configured to send its data to somewhere else using exporters (Jaeger for instance) |
-| tracing.sidecarImage.tag | string | `"0.137.0"` |  |
+| tracing.sidecarImage.tag | string | `"0.146.1"` |  |

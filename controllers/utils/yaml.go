@@ -29,6 +29,9 @@ import (
 	istio "istio.io/client-go/pkg/apis/networking/v1"
 	corev1 "k8s.io/api/core/v1"
 	netv1 "k8s.io/api/networking/v1"
+	gatewayapiv1 "sigs.k8s.io/gateway-api/apis/v1"
+	gatewayapiv1alpha2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
+	gatewayapiv1alpha3 "sigs.k8s.io/gateway-api/apis/v1alpha3"
 	// TODO: does this code run also for v1beta1 CRDs? No it does not
 	// What if we add those to the schema? Look for "istio.io/client-go/pkg/apis/networking/v1" in the code
 )
@@ -84,6 +87,84 @@ func FileToIstioGateway(file string) *istio.Gateway {
 		panic(err)
 	}
 	return gw
+}
+
+// FileToGatewayApiGateway takes a file and returns a GatewayAPI Gateway object
+func FileToGatewayApiGateway(file string) *gatewayapiv1.Gateway {
+	yaml, err := os.ReadFile(file)
+	if err != nil {
+		panic(fmt.Errorf("can't open example CR file: %s", file))
+	}
+	gateway, err := YamlToGatewayApiGateway(yaml)
+	if err != nil {
+		panic(err)
+	}
+	return gateway
+}
+
+// FileToGatewayApiHttpRoute takes a file and returns a GatewayAPI HTTPRoute object
+func FileToGatewayApiHttpRoute(file string) *gatewayapiv1.HTTPRoute {
+	yaml, err := os.ReadFile(file)
+	if err != nil {
+		panic(fmt.Errorf("can't open example CR file: %s", file))
+	}
+	httproute, err := YamlToGatewayApiHttpRoute(yaml)
+	if err != nil {
+		panic(err)
+	}
+	return httproute
+}
+
+// FileToGatewayApiGrpcRoute takes a file and returns a GatewayAPI GRPCRoute object
+func FileToGatewayApiGrpcRoute(file string) *gatewayapiv1.GRPCRoute {
+	yaml, err := os.ReadFile(file)
+	if err != nil {
+		panic(fmt.Errorf("can't open example CR file: %s", file))
+	}
+	grpcroute, err := YamlToGatewayApiGrpcRoute(yaml)
+	if err != nil {
+		panic(err)
+	}
+	return grpcroute
+}
+
+// FileToGatewayApiTlsRoute takes a file and returns a GatewayAPI TLSRoute object
+func FileToGatewayApiTlsRoute(file string) *gatewayapiv1alpha3.TLSRoute {
+	yaml, err := os.ReadFile(file)
+	if err != nil {
+		panic(fmt.Errorf("can't open example CR file: %s", file))
+	}
+	tlsRoute, err := YamlToGatewayApiTlsRoute(yaml)
+	if err != nil {
+		panic(err)
+	}
+	return tlsRoute
+}
+
+// FileToGatewayApiTcpRoute takes a file and returns a GatewayAPI TCPRoute object
+func FileToGatewayApiTcpRoute(file string) *gatewayapiv1alpha2.TCPRoute {
+	yaml, err := os.ReadFile(file)
+	if err != nil {
+		panic(fmt.Errorf("can't open example CR file: %s", file))
+	}
+	tcpRoute, err := YamlToGatewayApiTcpRoute(yaml)
+	if err != nil {
+		panic(err)
+	}
+	return tcpRoute
+}
+
+// FileToGatewayApiUdpRoute takes a file and returns a GatewayAPI UDPRoute object
+func FileToGatewayApiUdpRoute(file string) *gatewayapiv1alpha2.UDPRoute {
+	yaml, err := os.ReadFile(file)
+	if err != nil {
+		panic(fmt.Errorf("can't open example CR file: %s", file))
+	}
+	udpRoute, err := YamlToGatewayApiUdpRoute(yaml)
+	if err != nil {
+		panic(err)
+	}
+	return udpRoute
 }
 
 // FileToService takes a file and returns a Service object
@@ -167,7 +248,6 @@ func YamlToIstioVirtualService(yaml []byte) (*istio.VirtualService, error) {
 
 // YamlToIstioGateway takes yaml and returns an Istio Gateway object
 func YamlToIstioGateway(yaml []byte) (*istio.Gateway, error) {
-	// yamlBytes contains a []byte of my yaml job spec
 	// convert the yaml to json
 	jsonBytes, err := yamlConv.YAMLToJSON(yaml)
 	if err != nil {
@@ -180,4 +260,100 @@ func YamlToIstioGateway(yaml []byte) (*istio.Gateway, error) {
 		return &istio.Gateway{}, err
 	}
 	return gw, nil
+}
+
+// YamlToGatewayApiGateway takes yaml and returns a GatewayAPI Gateway object
+func YamlToGatewayApiGateway(yaml []byte) (*gatewayapiv1.Gateway, error) {
+	// convert the yaml to json
+	jsonBytes, err := yamlConv.YAMLToJSON(yaml)
+	if err != nil {
+		return &gatewayapiv1.Gateway{}, err
+	}
+	// unmarshal the json into the kube struct
+	gateway := &gatewayapiv1.Gateway{}
+	err = json.Unmarshal(jsonBytes, &gateway)
+	if err != nil {
+		return &gatewayapiv1.Gateway{}, err
+	}
+	return gateway, nil
+}
+
+// YamlToGatewayApiHttpRoute takes yaml and returns a GatewayAPI HTTPRoute object
+func YamlToGatewayApiHttpRoute(yaml []byte) (*gatewayapiv1.HTTPRoute, error) {
+	// convert the yaml to json
+	jsonBytes, err := yamlConv.YAMLToJSON(yaml)
+	if err != nil {
+		return &gatewayapiv1.HTTPRoute{}, err
+	}
+	// unmarshal the json into the kube struct
+	httproute := &gatewayapiv1.HTTPRoute{}
+	err = json.Unmarshal(jsonBytes, &httproute)
+	if err != nil {
+		return &gatewayapiv1.HTTPRoute{}, err
+	}
+	return httproute, nil
+}
+
+// YamlToGatewayApiGrpcRoute takes yaml and returns a GatewayAPI GRPCRoute object
+func YamlToGatewayApiGrpcRoute(yaml []byte) (*gatewayapiv1.GRPCRoute, error) {
+	// convert the yaml to json
+	jsonBytes, err := yamlConv.YAMLToJSON(yaml)
+	if err != nil {
+		return &gatewayapiv1.GRPCRoute{}, err
+	}
+	// unmarshal the json into the kube struct
+	grpcroute := &gatewayapiv1.GRPCRoute{}
+	err = json.Unmarshal(jsonBytes, &grpcroute)
+	if err != nil {
+		return &gatewayapiv1.GRPCRoute{}, err
+	}
+	return grpcroute, nil
+}
+
+// YamlToGatewayApiTlsRoute takes yaml and returns a GatewayAPI TLSRoute object
+func YamlToGatewayApiTlsRoute(yaml []byte) (*gatewayapiv1alpha3.TLSRoute, error) {
+	// convert the yaml to json
+	jsonBytes, err := yamlConv.YAMLToJSON(yaml)
+	if err != nil {
+		return &gatewayapiv1alpha3.TLSRoute{}, err
+	}
+	// unmarshal the json into the kube struct
+	tlsRoute := &gatewayapiv1alpha3.TLSRoute{}
+	err = json.Unmarshal(jsonBytes, &tlsRoute)
+	if err != nil {
+		return &gatewayapiv1alpha3.TLSRoute{}, err
+	}
+	return tlsRoute, nil
+}
+
+// YamlToGatewayApiTcpRoute takes yaml and returns a GatewayAPI TCPRoute object
+func YamlToGatewayApiTcpRoute(yaml []byte) (*gatewayapiv1alpha2.TCPRoute, error) {
+	// convert the yaml to json
+	jsonBytes, err := yamlConv.YAMLToJSON(yaml)
+	if err != nil {
+		return &gatewayapiv1alpha2.TCPRoute{}, err
+	}
+	// unmarshal the json into the kube struct
+	tcpRoute := &gatewayapiv1alpha2.TCPRoute{}
+	err = json.Unmarshal(jsonBytes, &tcpRoute)
+	if err != nil {
+		return &gatewayapiv1alpha2.TCPRoute{}, err
+	}
+	return tcpRoute, nil
+}
+
+// YamlToGatewayApiUdpRoute takes yaml and returns a GatewayAPI UDPRoute object
+func YamlToGatewayApiUdpRoute(yaml []byte) (*gatewayapiv1alpha2.UDPRoute, error) {
+	// convert the yaml to json
+	jsonBytes, err := yamlConv.YAMLToJSON(yaml)
+	if err != nil {
+		return &gatewayapiv1alpha2.UDPRoute{}, err
+	}
+	// unmarshal the json into the kube struct
+	udpRoute := &gatewayapiv1alpha2.UDPRoute{}
+	err = json.Unmarshal(jsonBytes, &udpRoute)
+	if err != nil {
+		return &gatewayapiv1alpha2.UDPRoute{}, err
+	}
+	return udpRoute, nil
 }

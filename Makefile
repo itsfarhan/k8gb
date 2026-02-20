@@ -45,14 +45,15 @@ HELM_ARGS ?=
 K8GB_COREDNS_IP ?= kubectl get svc k8gb-coredns -n k8gb -o custom-columns='IP:spec.clusterIP' --no-headers
 LOG_FORMAT ?= simple
 LOG_LEVEL ?= debug
-CONTROLLER_GEN_VERSION ?= v0.19.0
+CONTROLLER_GEN_VERSION ?= v0.20.1
 GOLIC_VERSION ?= v0.7.2
-GOLANGCI_VERSION ?= v2.5.0
-GRAFANA_VERSION ?= 10.1.2
-ISTIO_VERSION ?= v1.27.2
-NGINX_INGRESS_VERSION ?= 4.13.3
-PODINFO_VERSION ?= 6.9.2
-PROMETHEUS_VERSION ?= 27.41.1
+GOLANGCI_VERSION ?= v2.8.0
+GRAFANA_VERSION ?= 10.5.15
+GATEWAY_API_VERSION ?= v1.4.1
+ISTIO_VERSION ?= v1.28.3
+NGINX_INGRESS_VERSION ?= 4.14.3
+PODINFO_VERSION ?= 6.10.1
+PROMETHEUS_VERSION ?= 28.8.1
 POD_NAMESPACE ?= k8gb
 CLUSTER_GEO_TAG ?= eu
 EXT_GSLB_CLUSTERS_GEO_TAGS ?= us
@@ -84,7 +85,7 @@ NO_VALUE ?= no_value
 ###############################
 PWD ?=  $(shell pwd)
 ifndef VERSION
-VERSION := $(shell git fetch --force --tags &> /dev/null ; git describe --tags --abbrev=0)
+VERSION := $(shell git fetch --force --tags &> /dev/null; git describe --tags --abbrev=0 2>/dev/null || echo 'v0.0.0')
 endif
 COMMIT_HASH ?= $(shell git rev-parse --short HEAD)
 SEMVER ?= $(VERSION)-$(COMMIT_HASH)
@@ -222,7 +223,7 @@ deploy-local-cluster:
 		--version "$(NGINX_INGRESS_VERSION)" -f $(NGINX_INGRESS_VALUES_PATH)
 
 	@echo -e "\n$(YELLOW)Create coredns init-ingress $(NC)"
-	kubectl apply -f ./deploy/crds/init-ingress.yaml
+	kubectl apply -f ./deploy/gslb/init-ingress.yaml
 	@echo -e "\n$(YELLOW)Wait for ingress IP $(NC)"
 	@while [ -z "$$(kubectl get ingress init-ingress -n k8gb -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" ]; do \
 		echo "Waiting for external IP..."; \
@@ -232,6 +233,9 @@ deploy-local-cluster:
 
 	@echo -e "\n$(YELLOW)Deploy GSLB operator from $(VERSION) $(NC)"
 	$(MAKE) deploy-k8gb-with-helm
+
+	@echo -e "\n$(YELLOW)Install Gateway API CRDs $(NC)"
+	kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$(GATEWAY_API_VERSION)/experimental-install.yaml
 
 	@echo -e "\n$(YELLOW)Install Istio CRDs $(NC)"
 	kubectl create namespace istio-system --dry-run=client -o yaml | kubectl apply -f -
@@ -256,27 +260,53 @@ deploy-local-cluster:
 
 .PHONY: deploy-test-apps
 deploy-test-apps: ## Deploy Podinfo (example app) and Apply Gslb Custom Resources
-	@echo -e "\n$(YELLOW)Deploy GSLB cr $(NC)"
-	kubectl apply -f deploy/crds/test-namespace-ingress.yaml
-	$(call apply-cr,deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_ingress_ref.yaml)
-	$(call apply-cr,deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_failover_ingress_ref.yaml)
+	@echo -e "\n$(YELLOW)Deploy GSLB CR for Ingress $(NC)"
+	kubectl apply -f deploy/gslb/namespace_ingress.yaml
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_ingress_ref.yaml)
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_failover_ingress_ref.yaml)
 
-	kubectl apply -f deploy/crds/test-namespace-istio.yaml
-	$(call apply-cr,deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_istio.yaml)
-	$(call apply-cr,deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_failover_istio.yaml)
-	$(call apply-cr,deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_notfound_istio.yaml)
-	$(call apply-cr,deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_unhealthy_istio.yaml)
+	@echo -e "\n$(YELLOW)Deploy GSLB CR for Istio VirtualService $(NC)"
+	kubectl apply -f deploy/gslb/namespace_istio.yaml
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_istio.yaml)
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_failover_istio.yaml)
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_notfound_istio.yaml)
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_unhealthy_istio.yaml)
+
+	@echo -e "\n$(YELLOW)Deploy GSLB CR for Gateway API HTTPRoute $(NC)"
+	kubectl apply -f deploy/gslb/namespace_gatewayapi.yaml
+	kubectl apply -f deploy/gslb/gatewayapi_gateway.yaml
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_gatewayapi_httproute.yaml)
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_failover_gatewayapi_httproute.yaml)
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_notfound_gatewayapi_httproute.yaml)
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_unhealthy_gatewayapi_httproute.yaml)
+
+	@echo -e "\n$(YELLOW)Deploy GSLB CR for Gateway API TCPRoute $(NC)"
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_failover_gatewayapi_tcproute.yaml)
+
+	@echo -e "\n$(YELLOW)Deploy GSLB CR for Gateway API UDPRoute $(NC)"
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_failover_gatewayapi_udproute.yaml)
+
+	@echo -e "\n$(YELLOW)Deploy GSLB CR for Gateway API TLSRoute $(NC)"
+	$(call apply-cr,deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_failover_gatewayapi_tlsroute.yaml)
 
 	@echo -e "\n$(YELLOW)Deploy podinfo $(NC)"
 	kubectl apply -f deploy/test-apps
 	helm repo add podinfo https://stefanprodan.github.io/podinfo
+	@echo -e "\n$(YELLOW)Deploy podinfo for Ingress $(NC)"
 	helm upgrade --install frontend --namespace test-gslb -f deploy/test-apps/podinfo/podinfo-values.yaml \
-		--set ui.message="`$(call get-cluster-geo-tag)`" \
+		--set ui.message="Ingress NGINX: `$(call get-cluster-geo-tag)`" \
 		--set image.repository="$(PODINFO_IMAGE_REPO)" \
 		podinfo/podinfo \
 		--version $(PODINFO_VERSION)
+	@echo -e "\n$(YELLOW)Deploy podinfo for Istio VirtualService $(NC)"
 	helm upgrade --install frontend --namespace test-gslb-istio -f deploy/test-apps/podinfo/podinfo-values.yaml \
-		--set ui.message="`$(call get-cluster-geo-tag)`" \
+		--set ui.message="Istio: `$(call get-cluster-geo-tag)`" \
+		--set image.repository="$(PODINFO_IMAGE_REPO)" \
+		podinfo/podinfo \
+		--version $(PODINFO_VERSION)
+	@echo -e "\n$(YELLOW)Deploy podinfo for Gateway API HTTPRoute $(NC)"
+	helm upgrade --install frontend --namespace test-gslb-gatewayapi -f deploy/test-apps/podinfo/podinfo-values.yaml \
+		--set ui.message="Gateway API: `$(call get-cluster-geo-tag)`" \
 		--set image.repository="$(PODINFO_IMAGE_REPO)" \
 		podinfo/podinfo \
 		--version $(PODINFO_VERSION)
@@ -294,11 +324,6 @@ deploy-k8gb-with-helm:
 	$(call setup-dns-provider-secrets,$(CLUSTER_ID))
 	helm repo add --force-update k8gb https://www.k8gb.io
 	cd chart/k8gb && helm dependency update
-	# Deletion of the coredns service is needed because of the bug below
-	# The bug is triggered by the local setup change where we start exposing the port tcp/53 using a LoadBalancer service
-	# Can be removed once we upgrade to k8gb v0.16.0
-	# https://github.com/kubernetes/kubernetes/issues/105610
-	kubectl -n k8gb delete svc k8gb-coredns --ignore-not-found
 	helm -n k8gb upgrade -i k8gb $(CHART) --version=${VERSION} \
 		-f $(call get-helm-values-file,$(CHART)) \
 		-f $(VALUES_YAML) \
@@ -408,11 +433,11 @@ ensure-cluster-size:
 
 .PHONY: goreleaser
 goreleaser:
-	command -v goreleaser &> /dev/null || go install github.com/goreleaser/goreleaser@v1.7.0
+	go install github.com/goreleaser/goreleaser/v2@v2.12.7
 
 .PHONY: release-images
 release-images: goreleaser
-	goreleaser release --snapshot --skip-validate --skip-publish --rm-dist --skip-sbom --skip-sign
+	goreleaser release --snapshot --clean --skip=validate,publish,sbom,sign
 
 # build the docker image
 .PHONY: docker-build
@@ -425,11 +450,11 @@ docker-push: test
 
 .PHONY: init-failover
 init-failover:
-	$(call init-test-strategy, "deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_failover_ingress_ref.yaml")
+	$(call init-test-strategy, "deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_failover_ingress_ref.yaml")
 
 .PHONY: init-round-robin
 init-round-robin:
-	$(call init-test-strategy, "deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_ingress_ref.yaml")
+	$(call init-test-strategy, "deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_ingress_ref.yaml")
 
 # creates infoblox secret in current cluster
 .PHONY: infoblox-secret
@@ -651,9 +676,9 @@ endef
 
 define debug
 	$(call manifest)
-	kubectl apply -f deploy/crds/test-namespace-ingress.yaml
+	kubectl apply -f deploy/gslb/test-namespace-ingress.yaml
 	kubectl apply -f ./chart/k8gb/templates/k8gb.absa.oss_gslbs.yaml
-	kubectl apply -f ./deploy/crds/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_ingress.yaml
+	kubectl apply -f ./deploy/gslb/k8gb.absa.oss_v1beta1_gslb_cr_roundrobin_ingress.yaml
 	dlv $1
 endef
 
@@ -700,7 +725,7 @@ endef
 # values here are only available in the not released (next) version.
 # by releases the content would be moved into get-helm-args
 define get-next-args
-$(if $(filter ./chart/k8gb,$(1)),--set extdns.txtPrefix='k8gb-$(call nth-geo-tag,$2)-' --set extdns.txtOwnerId='k8gb-$(call nth-geo-tag,$2)')
+$(if $(filter ./chart/k8gb,$(1)),--set extdns.txtPrefix='k8gb-$(call nth-geo-tag,$2)-' --set extdns.txtOwnerId='k8gb-$(call nth-geo-tag,$2)' --set-string k8gb.imageRepo='$(REPO)')
 endef
 
 define setup-dns-provider-secrets
@@ -708,3 +733,87 @@ define setup-dns-provider-secrets
 	kubectl -n k8gb create secret generic rfc2136 --from-literal=secret=96Ah/a2g0/nLeFGK+d/0tzQcccf9hCEIy34PoXX2Qg8= || true
 	[ -n "$(GCP_CREDENTIALS_FILE)" ] && kubectl -n k8gb create secret generic external-dns-gcp-sa --from-file=credentials.json=$(GCP_CREDENTIALS_FILE) || true
 endef
+
+# Documentation with Mkdocs
+
+.PHONY: docs-deploy docs-deploy-last-3 docs-list
+
+docs-list: ## List deployed versions
+	mike list
+
+docs-deploy: ## Deploy docs with mike for VERSION (requires VERSION)
+	@if [ -z "$(VERSION)" ]; then \
+		echo "ERROR: VERSION is required"; \
+		exit 1; \
+	fi
+	@set -eu; \
+	VERSION="$(VERSION)"; \
+	if ! command -v yq >/dev/null 2>&1; then \
+		echo "ERROR: yq is required (https://github.com/mikefarah/yq)"; \
+		exit 1; \
+	fi; \
+	git fetch --force --tags; \
+	ORIGINAL_REF=$$(git symbolic-ref --short -q HEAD || git rev-parse HEAD); \
+	cleanup() { git checkout --quiet "$$ORIGINAL_REF"; }; \
+	trap cleanup EXIT INT TERM; \
+	echo "Deploying documentation for $$VERSION"; \
+	if ! git show "$$VERSION:mkdocs.yml" >/dev/null 2>&1; then \
+		echo "ERROR: $$VERSION does not contain mkdocs.yml"; \
+		exit 1; \
+	fi; \
+	git checkout --quiet "$$VERSION"; \
+	echo "Ensuring mike version provider in mkdocs.yml for $$VERSION"; \
+	yq eval -i '.extra.version.provider = "mike"' mkdocs.yml; \
+	mike deploy --push "$$VERSION"; \
+	LATEST_VERSION=$$(git tag -l 'v*' | sort -V | awk '/^v0\.1[4-9]\.|^v0\.[2-9][0-9]\.|^v[1-9]\./' | while read version; do \
+		if git show "$$version:mkdocs.yml" >/dev/null 2>&1; then \
+			echo "$$version"; \
+		fi; \
+	done | tail -n 1); \
+	if [ "$$VERSION" = "$$LATEST_VERSION" ]; then \
+		echo "Updating latest alias to $$VERSION"; \
+		mike deploy --push --update-aliases "$$VERSION" latest; \
+		mike set-default --push latest; \
+	fi; \
+	mike list
+
+docs-deploy-last-3: ## Deploy docs for latest 3 release tags
+	@set -eu; \
+	if ! command -v yq >/dev/null 2>&1; then \
+		echo "ERROR: yq is required (https://github.com/mikefarah/yq)"; \
+		exit 1; \
+	fi; \
+	git fetch --force --tags; \
+	VERSIONS=$$(git tag -l 'v*' | sort -V | awk '/^v0\.1[4-9]\.|^v0\.[2-9][0-9]\.|^v[1-9]\./' | tail -n 3); \
+	if [ -z "$$VERSIONS" ]; then \
+		echo "ERROR: no release tags found to deploy docs"; \
+		exit 1; \
+	fi; \
+	DEPLOYABLE_VERSIONS=$$(for version in $$VERSIONS; do \
+		if git show "$$version:mkdocs.yml" >/dev/null 2>&1; then \
+			echo "$$version"; \
+		fi; \
+	done); \
+	if [ -z "$$DEPLOYABLE_VERSIONS" ]; then \
+		echo "ERROR: no deployable documentation versions found in latest 3 tags"; \
+		exit 1; \
+	fi; \
+	ORIGINAL_REF=$$(git symbolic-ref --short -q HEAD || git rev-parse HEAD); \
+	cleanup() { git checkout --quiet "$$ORIGINAL_REF"; }; \
+	trap cleanup EXIT INT TERM; \
+	echo "Deploying latest 3 documentation versions:"; \
+	printf '%s\n' $$DEPLOYABLE_VERSIONS; \
+	LATEST_VERSION=$$(printf '%s\n' $$DEPLOYABLE_VERSIONS | sort -V | tail -n 1); \
+	for version in $$DEPLOYABLE_VERSIONS; do \
+		echo "Deploying $$version"; \
+		git checkout --quiet "$$version"; \
+		echo "Ensuring mike version provider in mkdocs.yml for $$version"; \
+		yq eval -i '.extra.version.provider = "mike"' mkdocs.yml; \
+		if [ "$$version" = "$$LATEST_VERSION" ]; then \
+			mike deploy --push --update-aliases "$$version" latest; \
+		else \
+			mike deploy --push "$$version"; \
+		fi; \
+	done; \
+	mike set-default --push latest; \
+	mike list

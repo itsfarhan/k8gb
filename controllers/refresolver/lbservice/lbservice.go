@@ -31,10 +31,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-const (
-	hostnameAnnotation = "k8gb.io/hostname"
-)
-
 // ReferenceResolver resolves LoadBalancer service references
 type ReferenceResolver struct {
 	service *corev1.Service
@@ -104,19 +100,19 @@ func (rr *ReferenceResolver) GetServers() ([]*k8gbv1beta1.Server, error) {
 	// since the service itself doesn't contain hostname information
 
 	// Check for required hostname annotation
-	hostname, ok := rr.gslb.Annotations[hostnameAnnotation]
+	hostname, ok := rr.gslb.Annotations[utils.HostnameAnnotation]
 	if !ok {
 		log.FromContext(context.TODO()).Error(fmt.Errorf("missing required hostname annotation"),
-			fmt.Sprintf("LoadBalancer service GSLB requires %s annotation", hostnameAnnotation),
+			fmt.Sprintf("LoadBalancer service GSLB requires %s annotation", utils.HostnameAnnotation),
 			"gslb", rr.gslb.Name)
-		return nil, fmt.Errorf("LoadBalancer service GSLB %s requires %s annotation", rr.gslb.Name, hostnameAnnotation)
+		return nil, fmt.Errorf("LoadBalancer service GSLB %s requires %s annotation", rr.gslb.Name, utils.HostnameAnnotation)
 	}
 
 	if hostname == "" {
 		log.FromContext(context.TODO()).Error(fmt.Errorf("empty hostname annotation"),
-			fmt.Sprintf("%s annotation cannot be empty", hostnameAnnotation),
+			fmt.Sprintf("%s annotation cannot be empty", utils.HostnameAnnotation),
 			"gslb", rr.gslb.Name)
-		return nil, fmt.Errorf("LoadBalancer service GSLB %s has empty %s annotation", rr.gslb.Name, hostnameAnnotation)
+		return nil, fmt.Errorf("LoadBalancer service GSLB %s has empty %s annotation", rr.gslb.Name, utils.HostnameAnnotation)
 	}
 
 	// Create server with the specified hostname
@@ -140,7 +136,7 @@ func (rr *ReferenceResolver) GetServers() ([]*k8gbv1beta1.Server, error) {
 // GetGslbExposedIPs retrieves the load balancer IP address of the GSLB
 func (rr *ReferenceResolver) GetGslbExposedIPs(gslbAnnotations map[string]string, parentZoneDNSServers utils.DNSList) ([]string, error) {
 	// Check for explicit IP addresses in annotations first
-	if serviceIPsFromAnnotation, ok := gslbAnnotations["k8gb.io/exposed-ip-addresses"]; ok {
+	if serviceIPsFromAnnotation, ok := gslbAnnotations[utils.ExternalIPsAnnotation]; ok {
 		return utils.ParseIPAddresses(serviceIPsFromAnnotation)
 	}
 

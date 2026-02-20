@@ -6,7 +6,7 @@ global:
 
 k8gb:
   # -- image repository
-  imageRepo: "docker.io/absaoss/k8gb"
+  imageRepo: k8gb-io.gateway.scarf.sh/absaoss/k8gb
   # -- ( string ) image tag defaults to Chart.AppVersion, see Chart.yaml, but can be overrided with imageTag key
   imageTag:
   # -- whether it should also deploy the gslb and dnsendpoints CRDs
@@ -90,9 +90,9 @@ coredns:
     skipConfig: true
   image:
     # -- CoreDNS CRD plugin image
-    repository: absaoss/k8s_crd
+    repository: k8gb-io.gateway.scarf.sh/absaoss/k8s_crd
     # -- image tag
-    tag: v0.1.2
+    tag: v0.2.0
   # -- Creates serviceAccount for coredns
   serviceAccount:
     create: true
@@ -199,15 +199,19 @@ tracing:
     # -- OpenTelemetry collector into which the k8gb operator sends the spans. It can be further configured to send its data
     # to somewhere else using exporters (Jaeger for instance)
     repository: otel/opentelemetry-collector
-    tag: 0.137.0
+    tag: 0.146.1
     pullPolicy: Always
 
   jaegerImage:
     # -- if `tracing.deployJaeger==true` this image will be used in the deployment for Jaeger
     repository: jaegertracing/all-in-one
-    tag: 1.74.0
+    tag: 1.76.0
     pullPolicy: Always
 
 istio:
   # -- install istio RBAC
+  enabled: true
+
+gatewayapi:
+  # -- install gatewayapi RBAC
   enabled: true

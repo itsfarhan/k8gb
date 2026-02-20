@@ -29,6 +29,7 @@
 - [Release process](#release-process)
   - [Signed releases](#signed-releases)
   - [Software bill of materials](#software-bill-of-materials)
+- [Governance](https://github.com/k8gb-io/k8gb/blob/master/GOVERNANCE.md)
 
 k8gb is licensed under [Apache 2 License](https://github.com/k8gb-io/k8gb/blob/master/LICENSE) and accepts contributions via GitHub pull requests.
 This document outlines the resources and guidelines necessary to follow by contributors to the k8gb project.
@@ -43,6 +44,8 @@ This document outlines the resources and guidelines necessary to follow by contr
 Feel free to ask for help and join the discussions at [k8gb community discussions forum](https://github.com/k8gb-io/k8gb/discussions).
 We have [dedicated `#k8gb` channel on Cloud Native Computing Foundation (CNCF) Slack](https://cloud-native.slack.com/archives/C021P656HGB),
 and we can also actively monitoring [`#sig-multicluster` channel on Kubernetes Slack](https://kubernetes.slack.com/archives/C09R1PJR3).
+
+Another great way to get help is to attend the community meetings. Community meetings take place every other Wednesday from 13:00 CET to 13:30 CET [calendar](https://zoom-lfx.platform.linuxfoundation.org/meetings/k8gb?view=month). You can join the [Zoom Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/92572060749?password=645f8346-1952-44fa-bd9b-45208260fc10).
 
 ## Reporting issues
 
@@ -146,8 +149,8 @@ If you need to check and query the k8gb metrics locally, you can install a Prome
 
 The deployed Prometheus scrapes metrics from the dedicated k8gb operator endpoint and makes them accessible via Prometheus web UI:
 
-- http://127.0.0.1:9080
-- http://127.0.0.1:9081
+- http://127.0.0.1:9090
+- http://127.0.0.1:9091
 
 All the metric data is ephemeral and will be lost with pod restarts.
 To uninstall Prometheus, run `make uninstall-prometheus`
