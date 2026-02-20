@@ -9,17 +9,7 @@ k8gb:
     level: debug
 
 coredns:
-  serviceType: NodePort
-  servers:
-  - zones:
-    - zone: .
-      use_tcp: true
-    port: 5353
-    servicePort: 53
-    nodePort: 30053
-    plugins:
-    - name: prometheus
-      parameters: 0.0.0.0:9153
+  serviceType: LoadBalancer
 
 extdns:
   enabled: true
