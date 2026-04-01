@@ -63,6 +63,7 @@ On YouTube: <tbd>
   - https://github.com/k8gb-io/k8gb/pull/2291 - Farhan
   - https://github.com/k8gb-io/k8gb/pull/2307/ - Farhan
   - https://github.com/k8gb-io/k8gb/pull/2095 - Farhan
+  - https://github.com/k8gb-io/k8gb/pull/2254 - Farhan
   - https://github.com/k8gb-io/k8gb/pull/2313 - Michal - ZD for review
 - **Community Update**
   - Incubation
