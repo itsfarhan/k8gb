@@ -22,9 +22,12 @@ import (
 	"context"
 	"errors"
 
-	"github.com/k8gb-io/k8gb/controllers/resolver"
+	"github.com/k8gb-io/k8gb/controllers/logging"
 
-	"github.com/k8gb-io/k8gb/api/v1beta1"
+	"github.com/k8gb-io/k8gb/controllers/resolver"
+	"github.com/k8gb-io/k8gb/controllers/zones"
+
+	"github.com/k8gb-io/k8gb/api/v1beta1io"
 	"github.com/k8gb-io/k8gb/controllers/mocks"
 	"github.com/k8gb-io/k8gb/controllers/tracing"
 	"github.com/stretchr/testify/assert"
@@ -48,6 +51,7 @@ func TestReconciliation(t *testing.T) {
 		reqName      = "test"
 		reqNamespace = "default"
 	)
+	log := logging.Logger()
 	skipTest := errors.New("this indicates that test successfully passed but skipping reconciliation")
 	config := &resolver.Config{
 		ReconcileRequeueSeconds: 0,
@@ -62,14 +66,14 @@ func TestReconciliation(t *testing.T) {
 			expectedError: false,
 			setup: func(ctrl *gomock.Controller) *GslbReconciler {
 
-				found := &v1beta1.Gslb{
+				found := &v1beta1io.Gslb{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:        reqName,
 						Namespace:   reqNamespace,
 						Annotations: map[string]string{"app": reqName},
 					},
-					Spec: v1beta1.GslbSpec{
-						Strategy: v1beta1.Strategy{
+					Spec: v1beta1io.GslbSpec{
+						Strategy: v1beta1io.Strategy{
 							DNSTtlSeconds: 5,
 							Type:          "roundRobin",
 						},
@@ -80,11 +84,13 @@ func TestReconciliation(t *testing.T) {
 				defer cleanup()
 				cl := mocks.NewMockClient(ctrl)
 				resolver := mocks.NewMockGslbResolver(ctrl)
+				zoneService := zones.NewMockZoneDelegation(ctrl)
+				zoneService.EXPECT().HasAvailableIPs(gomock.Any()).Return(true).AnyTimes()
 				// reading GSLB from request
 				cl.EXPECT().
 					Get(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
 					DoAndReturn(func(_ context.Context, _ client.ObjectKey, obj client.Object, _ ...client.GetOption) error {
-						gslb := obj.(*v1beta1.Gslb)
+						gslb := obj.(*v1beta1io.Gslb)
 						*gslb = *found
 						return nil
 					}).
@@ -105,10 +111,12 @@ func TestReconciliation(t *testing.T) {
 					}).Times(1)
 
 				reconciler := &GslbReconciler{
-					Config:   config,
-					Tracer:   tracer,
-					Client:   cl,
-					Resolver: resolver,
+					Config:      config,
+					Tracer:      tracer,
+					Client:      cl,
+					Resolver:    resolver,
+					ZoneService: zoneService,
+					Logger:      log,
 				}
 				return reconciler
 			},
@@ -124,7 +132,7 @@ func TestReconciliation(t *testing.T) {
 			scheme := runtime.NewScheme()
 			utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 			utilruntime.Must(netv1.AddToScheme(scheme))
-			utilruntime.Must(v1beta1.AddToScheme(scheme))
+			utilruntime.Must(v1beta1io.AddToScheme(scheme))
 			reconciler.Scheme = scheme
 
 			// act
@@ -150,6 +158,7 @@ func TestReconciliation(t *testing.T) {
 }
 
 func TestSplitIPsByVersion(t *testing.T) {
+	log := logging.Logger()
 	tests := []struct {
 		name         string
 		ips          []string
@@ -189,7 +198,7 @@ func TestSplitIPsByVersion(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			ipv4Addresses, ipv6Addresses := splitIPsByVersion(test.ips)
+			ipv4Addresses, ipv6Addresses := splitIPsByVersion(log, test.ips)
 			assert.Equal(t, test.expectedIPv4, ipv4Addresses)
 			assert.Equal(t, test.expectedIPv6, ipv6Addresses)
 		})
@@ -197,16 +206,17 @@ func TestSplitIPsByVersion(t *testing.T) {
 }
 
 func TestFilterServersByDelegationZones(t *testing.T) {
+	log := logging.Logger()
 	tests := []struct {
 		name              string
-		servers           []*v1beta1.Server
+		servers           []*v1beta1io.Server
 		delegationZones   []string
 		expectedHostCount int
 		expectedHosts     []string
 	}{
 		{
 			name: "all hosts match single delegation zone",
-			servers: []*v1beta1.Server{
+			servers: []*v1beta1io.Server{
 				{Host: "app.cloud.example.com"},
 				{Host: "api.cloud.example.com"},
 			},
@@ -216,7 +226,7 @@ func TestFilterServersByDelegationZones(t *testing.T) {
 		},
 		{
 			name: "no hosts match delegation zone",
-			servers: []*v1beta1.Server{
+			servers: []*v1beta1io.Server{
 				{Host: "app.other.com"},
 				{Host: "api.other.com"},
 			},
@@ -226,7 +236,7 @@ func TestFilterServersByDelegationZones(t *testing.T) {
 		},
 		{
 			name: "mixed - some hosts match delegation zone",
-			servers: []*v1beta1.Server{
+			servers: []*v1beta1io.Server{
 				{Host: "app.cloud.example.com"},
 				{Host: "app.other.com"},
 				{Host: "api.cloud.example.com"},
@@ -237,14 +247,14 @@ func TestFilterServersByDelegationZones(t *testing.T) {
 		},
 		{
 			name:              "empty servers list",
-			servers:           []*v1beta1.Server{},
+			servers:           []*v1beta1io.Server{},
 			delegationZones:   []string{"cloud.example.com"},
 			expectedHostCount: 0,
 			expectedHosts:     []string{},
 		},
 		{
 			name: "multiple delegation zones",
-			servers: []*v1beta1.Server{
+			servers: []*v1beta1io.Server{
 				{Host: "app.zone1.example.com"},
 				{Host: "app.zone2.example.com"},
 				{Host: "app.other.com"},
@@ -265,7 +275,7 @@ func TestFilterServersByDelegationZones(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			delegationZones := createTestDelegationZones(test.delegationZones)
 
-			filtered := filterServersByDelegationZones(test.servers, delegationZones)
+			filtered := filterServersByDelegationZones(log, test.servers, delegationZones)
 
 			assert.Equal(t, test.expectedHostCount, len(filtered))
 			if test.expectedHostCount > 0 {

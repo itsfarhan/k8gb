@@ -36,7 +36,185 @@ Join the [Zoom Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/92
 
 </details>
 
-<details open><summary><strong>Feb 18, 2026 #86</strong></summary>
+<details open><summary><strong>April 15, 2026 #90</strong></summary>
+
+## April 15, 2026 #90 The Tax Man Cometh!
+
+Zoom Recording: https://zoom.us/rec/share/RjAVXKCGYWZJ32bJFIyqqtCzCxxmLOK3F_e0KRYeUM5faSZ3PONdaD_uRyq8TaYx.-fn3QMuG9L2Qyz42 
+
+On YouTube: https://youtu.be/N46N19RmQ2w 
+
+**Attendees**
+
+- Farhan
+- Michal
+- Dinar
+- Yury
+- Bradley
+
+**Agenda**
+
+- **News**
+  - [first blog post](https://deploy-preview-2329--k8gb-preview.netlify.app/blog/2026/03/22/k8gb-local-setup-beginners-guide/) 🎉
+- **[Issue Review](https://github.com/k8gb-io/k8gb/issues)**
+  - [project board](https://github.com/orgs/k8gb-io/projects/2/views/1)
+- **[PR Reviews](https://github.com/k8gb-io/k8gb/pulls)**
+  - ZoneDelegation and friends ... are [2323](https://github.com/k8gb-io/k8gb/pull/2323)-[2328](https://github.com/k8gb-io/k8gb/pull/2328) prereqs for [2102](https://github.com/k8gb-io/k8gb/pull/2102)?
+  - ready? [test(DTR): Testing different K8S versions for DTR (incubation)](https://github.com/k8gb-io/k8gb/pull/2095)
+  - renovate stuff
+  - community contributions
+    - [2282](https://github.com/k8gb-io/k8gb/pull/2282), [2281](https://github.com/k8gb-io/k8gb/pull/2281) @aryasoni98
+    - [2224](https://github.com/k8gb-io/k8gb/pull/2224) @piroddi
+    - [2121](https://github.com/k8gb-io/k8gb/pull/2121) @angelbarrera92
+    - [2110](https://github.com/k8gb-io/k8gb/pull/2110) @sudhamshk
+    - [2106](https://github.com/k8gb-io/k8gb/pull/2106) @ljluestc
+  - prune old things?
+- **Community Update**
+  - no Incubating update
+  - since KubeCon ...
+    - page views +33%
+    - unique visitors +65%
+    - followers +19
+- **Other**
+- **Action Items**
+  - pruning Issues and PRs
+  - who will lead the next community meeting?
+
+</details>
+
+<details><summary><strong>April 1, 2026 #89</strong></summary>
+
+## April 1, 2026 #89
+
+Zoom Recording: https://zoom.us/rec/share/65uyJVFyYDdJGeF4ymPUC_NA99mSCGBiD8lH5FQtZMeWjYNWGSlKHHhKBnCwll23.EDaZ0E2WuBgquspX 
+
+On YouTube: https://youtu.be/PgBJj2tOVww
+
+**Attendees**
+
+- Farhan 
+- Michal
+- Yury
+  
+**Agenda**
+
+- **News**
+  - KubeCon happened last week 🎉
+    - k8gb kiosk: P-12B | 24th Tuesday 15:10 - 19:00 | Hall 5 - Gouda Zone - Project Pavilion 🍻
+    - 2 talks: [Security Review Panel](https://sched.co/2EF6x) and [Building Unified Global Load Balancing for the Edge With k8gb](https://sched.co/2DY3a)
+- **Issue Review**
+  - [k8gb project board](https://github.com/orgs/k8gb-io/projects/2/views/1)
+  - Zone Delegation discussion and demo - Michal
+- **PR Reviews**
+  - https://github.com/k8gb-io/k8gb/pull/2291 - Farhan
+  - https://github.com/k8gb-io/k8gb/pull/2307/ - Farhan
+  - https://github.com/k8gb-io/k8gb/pull/2095 - Farhan
+  - https://github.com/k8gb-io/k8gb/pull/2313 - Michal - ZD for review
+- **Community Update**
+  - Incubation
+    - governance and tech reviews complete, working on ADOPTER interviews
+  - [contribution from Tailscale](https://github.com/k8gb-io/k8gb/pull/2285)
+  - Vanity stats
+    - 305 (140 last 90d) LinkedIn followers 📈
+    - page views up 43% last week, unique visitors up 87%
+    - scarf data - @ytsarev
+    - last month: 1,785 impressions / 64 reactions
+    - 1,161 ⭐
+- **Other**
+  - Trivy incident review https://github.com/k8gb-io/k8gb/issues/2294
+  - https://deathbyclawd.com/?url=k8gb.io we are immortal 
+- **Action Items**
+</details>
+
+<details><summary><strong>March 18, 2026 #88</strong></summary>
+
+## March 18, 2026 #88
+
+Zoom Recording: https://zoom.us/rec/share/zeQ82nsITHnb2vO8dlM4EjS42ldNlPHfDEiMcXIbW75Ql_X1S28aqrCO-leO2erx.lwjr2XFj2EH7G27H 
+
+On YouTube: https://youtu.be/mxJuYXV3p3c
+
+**Attendees**
+
+- Farhan 
+- Dinar
+- Yury
+- Bradley
+
+**Agenda**
+
+- **News**
+  - KubeCon next week 🎉
+    - k8gb kiosk: P-12B | 24th Tuesday 15:10 - 19:00 | Hall 5 - Gouda Zone - Project Pavilion 🍻
+    - 2 talks: [Security Review Panel](https://sched.co/2EF6x) and [Building Unified Global Load Balancing for the Edge With k8gb](https://sched.co/2DY3a)
+- **Issue Review**
+  - [k8gb project board](https://github.com/orgs/k8gb-io/projects/2/views/1)
+- **Community Update**
+  - Incubation
+    - governance and tech reviews complete, working on ADOPTER interviews
+    - heroic efforts on api group change - @ytsarev
+  - [contribution from Tailscale](https://github.com/k8gb-io/k8gb/pull/2285)
+  - Vanity stats
+    - 300 (140 last 90d) LinkedIn followers 📈
+    - page views up 43% last week, unique visitors up 87%
+    - scarf data - @ytsarev
+    - last month: 1,785 impressions / 64 reactions
+    - 1,153 ⭐
+- **Other**
+  - added [MBCP case study](https://github.com/k8gb-io/k8gb/blob/master/ADOPTERS.md#k8gb-adopters) to the website 
+- **Action Items**
+</details>
+
+<details><summary><strong>March 4, 2026 #87</strong></summary>
+
+## March 4, 2026 #87
+
+Zoom Recording: https://zoom.us/rec/share/ktKo_zEgfq4YCL_xOeJiCNR5JcCf4WIKQJtLWCstoqnkF0kYI5UExE2e-3Q2YleB.uGEjLTxEfu6VMGPO
+
+On YouTube: https://youtu.be/RugISBr1wds
+
+**Attendees**
+
+- Yury Tsarev
+- Dinar Valeev
+- Farhan Ahmed
+
+**Agenda**
+
+- [k8gb project board](https://github.com/orgs/k8gb-io/projects/2/views/1)
+- **News**
+    - https://github.com/k8gb-io/k8gb/releases/tag/v0.18.1 release
+    - Incubation
+      - need to make sure everything on the [Incubation Application](https://github.com/cncf/toc/issues/1472) is up2date
+      - Incubating DD Review
+        - Governance review done ✅
+        - Tech review WIP
+        - ADOPTER reviews WIP
+- **Issue Review**
+  - incubation issues:
+    - https://github.com/k8gb-io/k8gb/issues/2195 - almost done
+      - https://github.com/k8gb-io/k8gb/pull/2264 - merged
+      - [https://github.com/k8gb-io/k8gb/pulls](https://github.com/k8gb-io/k8gb/pull/2276) - should be last bit
+      - Problem with scarf.sh - apparently it does not support multiple backends for the same packages
+    - https://github.com/k8gb-io/k8gb/issues/2180 - looks simple, but not ...
+    let's organize a meeting with absa
+      - https://github.com/k8gb-io/k8gb/pull/2203 PR with ADR and implementation proposed - need extra e2e testing
+- **Community Update**
+  - next time
+- **Other**
+- **Action Items**
+  - @elohmrow:
+    - take first pass at https://github.com/k8gb-io/k8gb/issues/2219
+    - go through in progress on project board
+    - make sure we are all caught up on incubating tasks
+  - @k0da:
+    - review https://github.com/k8gb-io/k8gb/pull/2203
+  - @ytsarev:
+    - update  https://github.com/k8gb-io/k8gb/pull/2203 with extra handling of legacy cases
+
+</details>
+
+<details><summary><strong>Feb 18, 2026 #86</strong></summary>
 
 ## Feb 18, 2026 #86
 
