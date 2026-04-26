@@ -59,8 +59,14 @@ func TestUpdateStatus(t *testing.T) {
 				ClusterGeoTag:         "us",
 				ExtClustersGeoTagsRaw: []string{"eu", "za"},
 			},
-			arrangemocks: func(bs *ipresolver.MockResolver) {
-				bs.EXPECT().GetExposedIPs(gomock.Any()).Return(&ipresolver.Resolved{IPs: []string{"172.18.0.1", "172.18.0.2"}}, nil).AnyTimes()
+			arrangemocks: func(ips *ipresolver.MockResolver) {
+				ips.EXPECT().GetExposedIPs(gomock.Any()).Return(&ipresolver.Resolved{IPs: []string{"172.18.0.1", "172.18.0.2"}}, nil).AnyTimes()
+				ips.EXPECT().GetGlueAInfo(gomock.Any(), gomock.Any(), gomock.Any()).Return([]*ipresolver.GlueAInfo{
+					{IP: "172.18.0.1", Cluster: "gslb-ns-eu-cloud.example.com"},
+					{IP: "172.18.0.2", Cluster: "gslb-ns-eu-cloud.example.com"},
+					{IP: "172.28.0.1", Cluster: "gslb-ns-us-cloud.example.com"},
+					{IP: "172.28.0.2", Cluster: "gslb-ns-us-cloud.example.com"},
+				}, nil)
 			},
 			expectedStatus: []v1beta1.DNSServer{
 				{
@@ -73,19 +79,11 @@ func TestUpdateStatus(t *testing.T) {
 				},
 				{
 					Name:    "gslb-ns-us-cloud.example.com",
-					Address: "172.18.0.1",
+					Address: "172.28.0.1",
 				},
 				{
 					Name:    "gslb-ns-us-cloud.example.com",
-					Address: "172.18.0.2",
-				},
-				{
-					Name:    "gslb-ns-za-cloud.example.com",
-					Address: "172.18.0.1",
-				},
-				{
-					Name:    "gslb-ns-za-cloud.example.com",
-					Address: "172.18.0.2",
+					Address: "172.28.0.2",
 				},
 			},
 		},
@@ -125,8 +123,16 @@ func TestUpdateStatus(t *testing.T) {
 				ClusterGeoTag:         "us",
 				ExtClustersGeoTagsRaw: []string{"eu", "za"},
 			},
-			arrangemocks: func(bs *ipresolver.MockResolver) {
-				bs.EXPECT().GetExposedIPs(gomock.Any()).Return(&ipresolver.Resolved{IPs: []string{"172.18.0.1", "172.18.0.2"}}, nil).AnyTimes()
+			arrangemocks: func(ips *ipresolver.MockResolver) {
+				ips.EXPECT().GetExposedIPs(gomock.Any()).Return(&ipresolver.Resolved{IPs: []string{"172.18.0.1", "172.18.0.2"}}, nil).AnyTimes()
+				ips.EXPECT().GetGlueAInfo(gomock.Any(), gomock.Any(), gomock.Any()).Return([]*ipresolver.GlueAInfo{
+					{IP: "172.18.0.1", Cluster: "gslb-ns-eu-cloud.example.com"},
+					{IP: "172.18.0.2", Cluster: "gslb-ns-eu-cloud.example.com"},
+					{IP: "172.28.0.1", Cluster: "gslb-ns-us-cloud.example.com"},
+					{IP: "172.28.0.2", Cluster: "gslb-ns-us-cloud.example.com"},
+					{IP: "172.38.0.1", Cluster: "gslb-ns-za-cloud.example.com"},
+					{IP: "172.38.0.2", Cluster: "gslb-ns-za-cloud.example.com"},
+				}, nil)
 			},
 			expectedStatus: []v1beta1.DNSServer{
 				{
@@ -139,19 +145,19 @@ func TestUpdateStatus(t *testing.T) {
 				},
 				{
 					Name:    "gslb-ns-us-cloud.example.com",
-					Address: "172.18.0.1",
+					Address: "172.28.0.1",
 				},
 				{
 					Name:    "gslb-ns-us-cloud.example.com",
-					Address: "172.18.0.2",
+					Address: "172.28.0.2",
 				},
 				{
 					Name:    "gslb-ns-za-cloud.example.com",
-					Address: "172.18.0.1",
+					Address: "172.38.0.1",
 				},
 				{
 					Name:    "gslb-ns-za-cloud.example.com",
-					Address: "172.18.0.2",
+					Address: "172.38.0.2",
 				},
 			},
 		},
@@ -178,19 +184,19 @@ func TestUpdateStatus(t *testing.T) {
 						},
 						{
 							Name:    "gslb-ns-us-cloud.example.com",
-							Address: "172.18.0.1",
+							Address: "172.28.0.1",
 						},
 						{
 							Name:    "gslb-ns-us-cloud.example.com",
-							Address: "172.18.0.2",
+							Address: "172.28.0.2",
 						},
 						{
 							Name:    "gslb-ns-za-cloud.example.com",
-							Address: "172.18.0.1",
+							Address: "172.38.0.1",
 						},
 						{
 							Name:    "gslb-ns-za-cloud.example.com",
-							Address: "172.18.0.2",
+							Address: "172.38.0.2",
 						},
 					},
 				},
@@ -199,8 +205,16 @@ func TestUpdateStatus(t *testing.T) {
 				ClusterGeoTag:         "us",
 				ExtClustersGeoTagsRaw: []string{"eu", "za"},
 			},
-			arrangemocks: func(bs *ipresolver.MockResolver) {
-				bs.EXPECT().GetExposedIPs(gomock.Any()).Return(&ipresolver.Resolved{IPs: []string{"172.18.0.1", "172.18.0.2"}}, nil).AnyTimes()
+			arrangemocks: func(ips *ipresolver.MockResolver) {
+				ips.EXPECT().GetExposedIPs(gomock.Any()).Return(&ipresolver.Resolved{IPs: []string{"172.18.0.1", "172.18.0.2"}}, nil).AnyTimes()
+				ips.EXPECT().GetGlueAInfo(gomock.Any(), gomock.Any(), gomock.Any()).Return([]*ipresolver.GlueAInfo{
+					{IP: "172.18.0.1", Cluster: "gslb-ns-eu-cloud.example.com"},
+					{IP: "172.18.0.2", Cluster: "gslb-ns-eu-cloud.example.com"},
+					{IP: "172.28.0.1", Cluster: "gslb-ns-us-cloud.example.com"},
+					{IP: "172.28.0.2", Cluster: "gslb-ns-us-cloud.example.com"},
+					{IP: "172.38.0.1", Cluster: "gslb-ns-za-cloud.example.com"},
+					{IP: "172.38.0.2", Cluster: "gslb-ns-za-cloud.example.com"},
+				}, nil)
 			},
 			expectedStatus: []v1beta1.DNSServer{
 				{
@@ -213,19 +227,19 @@ func TestUpdateStatus(t *testing.T) {
 				},
 				{
 					Name:    "gslb-ns-us-cloud.example.com",
-					Address: "172.18.0.1",
+					Address: "172.28.0.1",
 				},
 				{
 					Name:    "gslb-ns-us-cloud.example.com",
-					Address: "172.18.0.2",
+					Address: "172.28.0.2",
 				},
 				{
 					Name:    "gslb-ns-za-cloud.example.com",
-					Address: "172.18.0.1",
+					Address: "172.38.0.1",
 				},
 				{
 					Name:    "gslb-ns-za-cloud.example.com",
-					Address: "172.18.0.2",
+					Address: "172.38.0.2",
 				},
 			},
 		},
@@ -235,7 +249,7 @@ func TestUpdateStatus(t *testing.T) {
 
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			bs := ipresolver.NewMockResolver(ctrl)
+			ips := ipresolver.NewMockResolver(ctrl)
 			cl := mocks.NewMockClient(ctrl)
 			clsr := mocks.NewMockSubResourceWriter(ctrl)
 			cl.EXPECT().
@@ -245,7 +259,7 @@ func TestUpdateStatus(t *testing.T) {
 					*zd = *test.zoneDelegation
 					return nil
 				}).AnyTimes()
-			test.arrangemocks(bs)
+			test.arrangemocks(ips)
 
 			cl.EXPECT().Status().Return(clsr).AnyTimes()
 			clsr.EXPECT().Update(gomock.Any(), gomock.Any()).DoAndReturn(func(_ context.Context, obj client.Object, _ ...client.SubResourceUpdateOption) error {
@@ -254,7 +268,7 @@ func TestUpdateStatus(t *testing.T) {
 				assert.True(t, equalDNSServers(test.expectedStatus, zd.Status.DNSServers))
 				return nil
 			}).AnyTimes()
-			err := NewZoneDelegationImpl(cl, nil, test.config, bs).UpdateStatus(context.TODO(), test.zoneDelegation)
+			err := NewZoneDelegationImpl(cl, nil, test.config, ips).UpdateStatus(context.TODO(), test.zoneDelegation)
 			if test.expectedError {
 				assert.Error(t, err)
 				return
@@ -413,6 +427,196 @@ func TestListAllZones(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NoError(t, equalZoneDelegationItems(test.expectedResult, zd.Items))
 
+		})
+	}
+}
+
+func TestResolveAuthoritativeServersFromZoneDelegations(t *testing.T) {
+	var tests = []struct {
+		name                    string
+		host                    string
+		existingZoneDelegations *v1beta1.ZoneDelegationList
+		config                  *resolver.Config
+		expectedError           bool
+		expectedResult          AuthoritativeServers
+	}{
+		{
+			name: "resolve authoritative servers from zone delegations",
+			host: "login.app.cloud.example.com",
+			config: &resolver.Config{
+				ClusterGeoTag:         "eu",
+				ExtClustersGeoTagsRaw: []string{"us", "za"},
+			},
+			existingZoneDelegations: &v1beta1.ZoneDelegationList{
+				Items: []v1beta1.ZoneDelegation{
+					{
+						ObjectMeta: metav1.ObjectMeta{
+							Name: "cloud-example-com.conf",
+						},
+						Spec: v1beta1.ZoneDelegationSpec{
+							LoadBalancedZone: "cloud.example.com",
+							ParentZone:       "example.com",
+							DNSZoneNegTTL:    30,
+						},
+						Status: v1beta1.ZoneDelegationStatus{
+							DNSServers: []v1beta1.DNSServer{
+								{Name: "gslb-ns-eu-cloud.example.com", Address: "172.18.0.1"},
+								{Name: "gslb-ns-eu-cloud.example.com", Address: "172.18.0.2"},
+								{Name: "gslb-ns-us-cloud.example.com", Address: "172.20.0.1"},
+								{Name: "gslb-ns-us-cloud.example.com", Address: "172.20.0.2"},
+								{Name: "gslb-ns-za-cloud.example.com", Address: "172.22.0.1"},
+								{Name: "gslb-ns-za-cloud.example.com", Address: "172.22.0.2"},
+							},
+						},
+					},
+					{
+						ObjectMeta: metav1.ObjectMeta{
+							Name: "cloud-example-org.conf",
+						},
+						Spec: v1beta1.ZoneDelegationSpec{
+							LoadBalancedZone: "cloud.example.org",
+							ParentZone:       "example.org",
+							DNSZoneNegTTL:    30,
+						},
+						Status: v1beta1.ZoneDelegationStatus{
+							DNSServers: []v1beta1.DNSServer{
+								{Name: "gslb-ns-eu-cloud.example.org", Address: "172.18.0.1"},
+								{Name: "gslb-ns-eu-cloud.example.org", Address: "172.18.0.2"},
+								{Name: "gslb-ns-us-cloud.example.org", Address: "172.20.0.1"},
+								{Name: "gslb-ns-us-cloud.example.org", Address: "172.20.0.2"},
+								{Name: "gslb-ns-za-cloud.example.org", Address: "172.22.0.1"},
+								{Name: "gslb-ns-za-cloud.example.org", Address: "172.22.0.2"},
+							},
+						},
+					},
+				},
+			},
+			expectedResult: AuthoritativeServers{
+				"gslb-ns-us-cloud.example.com": AuthoritativeServer{IP: "172.20.0.2", GeoTag: "us", IsLocal: false},
+				"gslb-ns-za-cloud.example.com": AuthoritativeServer{IP: "172.22.0.2", GeoTag: "za", IsLocal: false},
+			},
+		},
+		{
+			name: "resolve authoritative servers when ZD doesnt match host",
+			host: "login.app.cloud.example.ai",
+			config: &resolver.Config{
+				ClusterGeoTag:         "eu",
+				ExtClustersGeoTagsRaw: []string{"us"},
+			},
+			existingZoneDelegations: &v1beta1.ZoneDelegationList{
+				Items: []v1beta1.ZoneDelegation{
+					{
+						ObjectMeta: metav1.ObjectMeta{
+							Name: "cloud-example-com.conf",
+						},
+						Spec: v1beta1.ZoneDelegationSpec{
+							LoadBalancedZone: "cloud.example.com",
+							ParentZone:       "example.com",
+							DNSZoneNegTTL:    30,
+						},
+						Status: v1beta1.ZoneDelegationStatus{
+							DNSServers: []v1beta1.DNSServer{
+								{Name: "gslb-ns-eu-cloud.example.com", Address: "172.18.0.1"},
+								{Name: "gslb-ns-eu-cloud.example.com", Address: "172.18.0.2"},
+								{Name: "gslb-ns-us-cloud.example.com", Address: "172.20.0.1"},
+								{Name: "gslb-ns-us-cloud.example.com", Address: "172.20.0.2"},
+							},
+						},
+					},
+					{
+						ObjectMeta: metav1.ObjectMeta{
+							Name: "cloud-example-org.conf",
+						},
+						Spec: v1beta1.ZoneDelegationSpec{
+							LoadBalancedZone: "cloud.example.org",
+							ParentZone:       "example.org",
+							DNSZoneNegTTL:    30,
+						},
+						Status: v1beta1.ZoneDelegationStatus{
+							DNSServers: []v1beta1.DNSServer{
+								{Name: "gslb-ns-eu-cloud.example.org", Address: "172.18.0.1"},
+								{Name: "gslb-ns-eu-cloud.example.org", Address: "172.18.0.2"},
+								{Name: "gslb-ns-us-cloud.example.org", Address: "172.20.0.1"},
+								{Name: "gslb-ns-us-cloud.example.org", Address: "172.20.0.2"},
+							},
+						},
+					},
+				},
+			},
+			expectedError:  true,
+			expectedResult: AuthoritativeServers{},
+		},
+		{
+			name: "resolve authoritative servers without ZD",
+			host: "login.app.cloud.example.com",
+			config: &resolver.Config{
+				ClusterGeoTag:         "eu",
+				ExtClustersGeoTagsRaw: []string{"us", "za"},
+			},
+			existingZoneDelegations: &v1beta1.ZoneDelegationList{
+				Items: []v1beta1.ZoneDelegation{},
+			},
+			expectedError:  true,
+			expectedResult: AuthoritativeServers{},
+		},
+		{
+			name: "resolve authoritative servers when ZD is not ready",
+			host: "login.app.cloud.example.com",
+			config: &resolver.Config{
+				ClusterGeoTag:         "eu",
+				ExtClustersGeoTagsRaw: []string{"us", "za"},
+			},
+			existingZoneDelegations: &v1beta1.ZoneDelegationList{
+				Items: []v1beta1.ZoneDelegation{
+					{
+						ObjectMeta: metav1.ObjectMeta{
+							Name: "cloud-example-com.conf",
+						},
+						Spec: v1beta1.ZoneDelegationSpec{
+							LoadBalancedZone: "cloud.example.com",
+							ParentZone:       "example.com",
+							DNSZoneNegTTL:    30,
+						},
+						Status: v1beta1.ZoneDelegationStatus{
+							DNSServers: []v1beta1.DNSServer{},
+						},
+					},
+					{
+						ObjectMeta: metav1.ObjectMeta{
+							Name: "cloud-example-org.conf",
+						},
+						Spec: v1beta1.ZoneDelegationSpec{
+							LoadBalancedZone: "cloud.example.org",
+							ParentZone:       "example.org",
+							DNSZoneNegTTL:    30,
+						},
+						Status: v1beta1.ZoneDelegationStatus{
+							DNSServers: []v1beta1.DNSServer{},
+						},
+					},
+				},
+			},
+			expectedResult: AuthoritativeServers{},
+			expectedError:  false,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			cl := mocks.NewMockClient(ctrl)
+			bt := ipresolver.NewMockResolver(ctrl)
+			cl.EXPECT().List(gomock.Any(), gomock.Any()).DoAndReturn(func(_ context.Context, obj client.ObjectList, _ ...client.ListOption) error {
+				*obj.(*v1beta1.ZoneDelegationList) = *test.existingZoneDelegations
+				return nil
+			}).AnyTimes()
+			result, err := NewZoneDelegationImpl(cl, nil, test.config, bt).ResolveAuthoritativeServersFromZoneDelegations(context.TODO(), test.host)
+			assert.Equal(t, test.expectedResult, result.GetExternalAuthoritativeServers())
+			if test.expectedError {
+				assert.Error(t, err)
+				return
+			}
+			assert.NoError(t, err)
 		})
 	}
 }

@@ -74,6 +74,21 @@ func (mr *MockZoneDelegationMockRecorder) AvailableIPs(ctx any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AvailableIPs", reflect.TypeOf((*MockZoneDelegation)(nil).AvailableIPs), ctx)
 }
 
+// ExtendedZoneDelegation mocks base method.
+func (m *MockZoneDelegation) ExtendedZoneDelegation(ctx context.Context, zd *v1beta1.ZoneDelegation) (*ExtendedZoneDelegation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ExtendedZoneDelegation", ctx, zd)
+	ret0, _ := ret[0].(*ExtendedZoneDelegation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ExtendedZoneDelegation indicates an expected call of ExtendedZoneDelegation.
+func (mr *MockZoneDelegationMockRecorder) ExtendedZoneDelegation(ctx, zd any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExtendedZoneDelegation", reflect.TypeOf((*MockZoneDelegation)(nil).ExtendedZoneDelegation), ctx, zd)
+}
+
 // Get mocks base method.
 func (m *MockZoneDelegation) Get(ctx context.Context, objKey client.ObjectKey) (*v1beta1.ZoneDelegation, error) {
 	m.ctrl.T.Helper()
@@ -160,6 +175,21 @@ func (m *MockZoneDelegation) ListConfigZoneDelegations(ctx context.Context) (*v1
 func (mr *MockZoneDelegationMockRecorder) ListConfigZoneDelegations(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConfigZoneDelegations", reflect.TypeOf((*MockZoneDelegation)(nil).ListConfigZoneDelegations), ctx)
+}
+
+// ResolveAuthoritativeServersFromZoneDelegations mocks base method.
+func (m *MockZoneDelegation) ResolveAuthoritativeServersFromZoneDelegations(ctx context.Context, host string) (AuthoritativeServers, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ResolveAuthoritativeServersFromZoneDelegations", ctx, host)
+	ret0, _ := ret[0].(AuthoritativeServers)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ResolveAuthoritativeServersFromZoneDelegations indicates an expected call of ResolveAuthoritativeServersFromZoneDelegations.
+func (mr *MockZoneDelegationMockRecorder) ResolveAuthoritativeServersFromZoneDelegations(ctx, host any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResolveAuthoritativeServersFromZoneDelegations", reflect.TypeOf((*MockZoneDelegation)(nil).ResolveAuthoritativeServersFromZoneDelegations), ctx, host)
 }
 
 // Save mocks base method.
