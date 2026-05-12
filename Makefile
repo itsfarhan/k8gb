@@ -802,27 +802,8 @@ endef
 docs-list: ## List deployed versions
 	mike list
 
-docs-sync-blog: ## Sync blog posts to all deployed documentation versions
-	@set -eu; \
-	echo "Syncing blog posts across all deployed versions..."; \
-	if [ ! -d "blog" ]; then \
-		echo "ERROR: blog/ directory not found. This target must be run from gh-pages branch after deployment."; \
-		exit 1; \
-	fi; \
-	SYNCED_COUNT=0; \
-	for version_dir in v*/; do \
-		if [ -d "$$version_dir" ] && [ -d "$$version_dir/blog" ]; then \
-			echo "Syncing blog to $$version_dir"; \
-			rm -rf "$$version_dir/blog"; \
-			cp -r blog "$$version_dir/blog"; \
-			SYNCED_COUNT=$$((SYNCED_COUNT + 1)); \
-		fi \
-	done; \
-	if [ $$SYNCED_COUNT -eq 0 ]; then \
-		echo "WARN: No versioned directories found to sync"; \
-	else \
-		echo "Successfully synced blog to $$SYNCED_COUNT version(s)"; \
-	fi
+docs-sync-blog: ## Sync blog posts to all deployed documentation versions (requires GHPAGES_DIR)
+	@hack/docs-sync-blog.sh "$(GHPAGES_DIR)"
 
 docs-deploy: ## Deploy docs with mike for VERSION (requires VERSION)
 	@if [ -z "$(VERSION)" ]; then \
