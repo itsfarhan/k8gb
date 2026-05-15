@@ -90,18 +90,7 @@ func calculateServiceHealth(
 				return serviceHealth, err
 			}
 
-			healthy := false
-			if len(endpoints.Items) > 0 && len(endpoints.Items[0].Endpoints) > 0 {
-				for _, endpoint := range endpoints.Items[0].Endpoints {
-					if len(endpoint.Addresses) > 0 &&
-						(endpoint.Conditions.Ready == nil || *endpoint.Conditions.Ready) {
-						healthy = true
-						break
-					}
-				}
-			}
-
-			if !healthy {
+			if !hasReadyEndpoint(endpoints) {
 				unhealthyCount++
 				continue
 			}
@@ -112,6 +101,18 @@ func calculateServiceHealth(
 		serviceHealth[server.Host] = calculateHostHealth(policy, healthyCount, unhealthyCount, notFoundCount)
 	}
 	return serviceHealth, nil
+}
+
+func hasReadyEndpoint(endpoints *discov1.EndpointSliceList) bool {
+	for _, endpointSlice := range endpoints.Items {
+		for _, endpoint := range endpointSlice.Endpoints {
+			if len(endpoint.Addresses) > 0 &&
+				(endpoint.Conditions.Ready == nil || *endpoint.Conditions.Ready) {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func effectiveServiceHealthPolicy(gslb *k8gbv1beta1io.Gslb) k8gbv1beta1io.ServiceHealthPolicy {

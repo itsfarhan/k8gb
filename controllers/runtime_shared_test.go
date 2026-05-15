@@ -166,6 +166,23 @@ func TestCalculateServiceHealth(t *testing.T) {
 			},
 		},
 		{
+			name:        "single server with ready endpoint in later EndpointSlice",
+			serverHosts: []string{"app.example.com"},
+			services: map[string][]serviceFixture{
+				"app.example.com": {
+					{
+						namespace:               "default",
+						name:                    "svc-a",
+						healthy:                 true,
+						readyEndpointAfterEmpty: true,
+					},
+				},
+			},
+			expected: map[string]k8gbv1beta1io.HealthStatus{
+				"app.example.com": k8gbv1beta1io.Healthy,
+			},
+		},
+		{
 			name:        "single server with no services",
 			serverHosts: []string{"app.example.com"},
 			services: map[string][]serviceFixture{
@@ -299,6 +316,8 @@ type serviceFixture struct {
 	name      string
 	healthy   bool
 	notFound  bool
+
+	readyEndpointAfterEmpty bool
 }
 
 func buildTestObjects(services map[string][]serviceFixture, testName string) []client.Object {
@@ -321,41 +340,38 @@ func buildTestObjects(services map[string][]serviceFixture, testName string) []c
 				epsName = testName + "-" + fixture.name
 			}
 
-			if fixture.healthy {
-				eps := &discov1.EndpointSlice{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      epsName,
-						Namespace: fixture.namespace,
-						Labels: map[string]string{
-							discov1.LabelServiceName: fixture.name,
-						},
-					},
-					Endpoints: []discov1.Endpoint{
-						{
-							Addresses: []string{"10.0.0.1"},
-							Conditions: discov1.EndpointConditions{
-								Ready: ptr(true),
-							},
-						},
-					},
-				}
-				objs = append(objs, eps)
-			} else {
-				eps := &discov1.EndpointSlice{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      epsName,
-						Namespace: fixture.namespace,
-						Labels: map[string]string{
-							discov1.LabelServiceName: fixture.name,
-						},
-					},
-					Endpoints: []discov1.Endpoint{},
-				}
-				objs = append(objs, eps)
+			if fixture.readyEndpointAfterEmpty {
+				objs = append(objs, buildEndpointSlice(fixture.namespace, epsName, fixture.name, false))
+				epsName += "-ready"
 			}
+			objs = append(objs, buildEndpointSlice(fixture.namespace, epsName, fixture.name, fixture.healthy))
 		}
 	}
 	return objs
+}
+
+func buildEndpointSlice(namespace, name, serviceName string, healthy bool) *discov1.EndpointSlice {
+	eps := &discov1.EndpointSlice{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: namespace,
+			Labels: map[string]string{
+				discov1.LabelServiceName: serviceName,
+			},
+		},
+		Endpoints: []discov1.Endpoint{},
+	}
+	if healthy {
+		eps.Endpoints = []discov1.Endpoint{
+			{
+				Addresses: []string{"10.0.0.1"},
+				Conditions: discov1.EndpointConditions{
+					Ready: ptr(true),
+				},
+			},
+		}
+	}
+	return eps
 }
 
 func buildTestGslb(
