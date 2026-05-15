@@ -23,6 +23,7 @@ import (
 	"testing"
 
 	k8gbv1beta1io "github.com/k8gb-io/k8gb/api/v1beta1io"
+	"github.com/k8gb-io/k8gb/controllers/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
@@ -366,7 +367,7 @@ func buildEndpointSlice(namespace, name, serviceName string, healthy bool) *disc
 			{
 				Addresses: []string{"10.0.0.1"},
 				Conditions: discov1.EndpointConditions{
-					Ready: ptr(true),
+					Ready: utils.Ptr(true),
 				},
 			},
 		}
@@ -407,5 +408,3 @@ func buildTestGslb(
 		},
 	}
 }
-
-func ptr[T any](v T) *T { return &v }
