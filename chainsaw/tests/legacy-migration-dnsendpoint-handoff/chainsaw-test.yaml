@@ -115,14 +115,20 @@ spec:
           value: legacy-dns-handoff
         content: |
           set -eu
-          kubectl delete gslb.k8gb.absa.oss "$NAME" -n "$NAMESPACE" --wait=false
+          # TEMPORARY (fork only, #2599 reproduction): run the original kubectl delete --wait in
+          # the background and poll in the foreground, to see whether the two disagree.
+          delete_log=$(mktemp)
           start=$(date +%s)
+          kubectl delete gslb.k8gb.absa.oss "$NAME" -n "$NAMESPACE" --wait=true --timeout=90s >"$delete_log" 2>&1 &
+          delete_pid=$!
+          deleted_at=""
           while :; do
             elapsed=$(( $(date +%s) - start ))
             if ! state=$(kubectl get gslb.k8gb.absa.oss "$NAME" -n "$NAMESPACE" --ignore-not-found \
                 -o jsonpath='{.metadata.deletionTimestamp} {.metadata.finalizers}'); then
               echo "${elapsed}s: could not read the legacy Gslb, retrying"
             elif [ -z "$state" ]; then
+              deleted_at=$elapsed
               echo "Legacy Gslb deleted after ${elapsed}s"
               break
             else
@@ -135,5 +141,11 @@ spec:
             fi
             sleep 2
           done
+          if wait "$delete_pid"; then
+            echo "REPRO: kubectl delete --wait succeeded after $(( $(date +%s) - start ))s, poll saw deletion at ${deleted_at}s"
+          else
+            echo "REPRO: kubectl delete --wait FAILED after $(( $(date +%s) - start ))s, poll saw deletion at ${deleted_at}s"
+            cat "$delete_log"
+          fi
           kubectl get gslb.k8gb.io "$NAME" -n "$NAMESPACE"
           kubectl get dnsendpoint "$NAME" -n "$NAMESPACE"
