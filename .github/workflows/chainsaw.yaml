@@ -136,27 +136,16 @@ jobs:
           mkdir -p "$ARTIFACTS_BASE" chainsaw/kubeconfig
           k3d kubeconfig get test-gslb1 > chainsaw/kubeconfig/eu.config
           k3d kubeconfig get test-gslb2 > chainsaw/kubeconfig/us.config
-          focused_failed=0
-          for i in $(seq 1 20); do
-            echo "::group::focused run $i"
-            if ! (cd chainsaw && CHAINSAW_ARTIFACTS_DIR="$ARTIFACTS_BASE/focused-$i" CLUSTERS_NUMBER=2 \
-                chainsaw test --config ./config.yaml --values ./values.yaml \
-                --test-dir ./tests/legacy-migration-dnsendpoint-handoff \
-                --test-dir ./tests/legacy-migration-requested-pauses-runtime); then
-              focused_failed=$((focused_failed + 1))
-            fi
-            echo "::endgroup::"
-          done
-          full_failed=0
-          for i in 1 2 3; do
-            echo "::group::full suite run $i"
-            if ! (cd chainsaw && CHAINSAW_ARTIFACTS_DIR="$ARTIFACTS_BASE/full-$i" CLUSTERS_NUMBER=2 \
-                chainsaw test --config ./config.yaml --values ./values.yaml); then
-              full_failed=$((full_failed + 1))
-            fi
-            echo "::endgroup::"
-          done
-          echo "REPRO SUMMARY: focused runs failed $focused_failed/20, full suite runs failed $full_failed/3"
+          # Second pass: one deliberate failure, to check the global catch saves state.
+          if (cd chainsaw && CHAINSAW_ARTIFACTS_DIR="$ARTIFACTS_BASE" CLUSTERS_NUMBER=2 \
+              chainsaw test --config ./config.yaml --values ./values.yaml \
+              --test-dir ./tests/zz-catch-check); then
+            echo "CATCH CHECK: unexpected pass"
+          else
+            echo "CATCH CHECK: failed as intended"
+          fi
+          echo "CATCH CHECK files:"
+          find "$ARTIFACTS_BASE" -type f -exec ls -l {} \;
 
       - name: Print debug info
         if: always()

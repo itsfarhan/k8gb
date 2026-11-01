@@ -1,0 +1,19 @@
+# TEMPORARY (fork only, #2599): fails on purpose to check the global catch in config.yaml.
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: zz-catch-check
+spec:
+  namespace: zz-catch-check
+  steps:
+  - name: namespace
+    cluster: eu
+    use:
+      template: ../../step-templates/namespace.yaml
+  - name: fail on purpose
+    cluster: eu
+    try:
+    - script:
+        content: |
+          echo "TEMPORARY: failing on purpose to check the global catch"
+          exit 1
